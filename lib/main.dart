@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_menu_qr/screens/home.dart';
+import 'package:food_menu_qr/screens/login.dart';
+import 'package:food_menu_qr/screens/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,19 +17,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ).copyWith(
-          primaryColor: Color(0xFFFFF5E1),
-          scaffoldBackgroundColor: Color(0xFFADD8E6),
+          primaryColor: Color(0xFFF5CB58),
+          scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
                   backgroundColor: Color(0xFFFFF5E1),
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 14),
                   textStyle:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w600)))),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+          appBarTheme: AppBarTheme(backgroundColor: Color(0xFFF5CB58))),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => const Home()
+        '/home': (context) => const Home(),
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register()
       },
     );
   }

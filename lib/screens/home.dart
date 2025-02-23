@@ -39,14 +39,18 @@ class _HomeState extends State<Home> {
                 height: 40,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
                 child: Text("Sign In"),
               ),
               const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
                 child: Text("Sign Up"),
               ),
             ],
