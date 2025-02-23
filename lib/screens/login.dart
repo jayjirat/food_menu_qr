@@ -41,7 +41,7 @@ class LoginState extends ConsumerState<Login> {
                 height: 10,
               ),
               Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                "Scan, order, and enjoy your favorite meals with ease. Sign in to explore delicious food options right at your fingertips! Start your journey by logging in and discovering more.",
                 style: TextStyle(
                   fontSize: 13,
                 ),
@@ -55,17 +55,16 @@ class LoginState extends ConsumerState<Login> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       inputWithLabel(
-                          onSaved: (value) => email = value ?? '',
                           obscureText: false,
                           context: context,
                           controller: emailController,
                           label: "Email",
-                          hintText: "example@example.com"),
+                          hintText: "example@example.com",
+                          textInputType: TextInputType.emailAddress),
                       const SizedBox(
                         height: 20,
                       ),
                       inputWithLabel(
-                          onSaved: (value) => password = value ?? '',
                           obscureText: true,
                           context: context,
                           controller: passwordController,
