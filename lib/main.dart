@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ).copyWith(
-          primaryColor: Color(0xFFF5CB58),
+          primaryColor: Color(0xFF391713),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF391713),
+              secondary: const Color(0xFFE95322)),
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
