@@ -11,29 +11,37 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Center(
         child: FadeTransition(
           opacity: AlwaysStoppedAnimation(1.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(
-                  "https://fastly.picsum.photos/id/362/200/200.jpg?hmac=AKqfQ8tnyGapdUtZ1f35ugad3WkJY-g1tn5hi7kF2zY",
-                  width: 150,
-                ),
+              Icon(
+                Icons.fastfood,
+                size: 200,
+                color: Color(0xFFF5CB58),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                "FoodQR",
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              RichText(
+                  text: TextSpan(
+                      text: "FOOD",
+                      style: TextStyle(
+                          color: Color(0xFFF5CB58),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32),
+                      children: [
+                    TextSpan(text: "QR", style: TextStyle(color: Colors.white))
+                  ])),
+              const SizedBox(
+                height: 30,
               ),
               Text(
                 "FoodQR – Scan, Order, Enjoy!",
-                style: TextStyle(fontSize: 14, color: Color(0xFF808080)),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
               const SizedBox(
                 height: 40,
@@ -48,6 +56,8 @@ class _HomeState extends State<Home> {
                 height: 10,
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFF3E9B5)),
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },

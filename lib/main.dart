@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
-                  backgroundColor: Color(0xFFFFF5E1),
+                  backgroundColor: Color(0xFFF5CB58),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 100, vertical: 14),
                   textStyle:
@@ -63,26 +63,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Center(
         child: FadeTransition(
           opacity: AlwaysStoppedAnimation(1.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(
-                  "https://fastly.picsum.photos/id/362/200/200.jpg?hmac=AKqfQ8tnyGapdUtZ1f35ugad3WkJY-g1tn5hi7kF2zY",
-                  width: 150,
-                ),
+              Icon(
+                Icons.fastfood,
+                size: 200,
+                color: Color(0xFFF5CB58),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                "FoodQR",
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
+              RichText(
+                  text: TextSpan(
+                      text: "FOOD",
+                      style: TextStyle(
+                          color: Color(0xFFF5CB58),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32),
+                      children: [
+                    TextSpan(text: "QR", style: TextStyle(color: Colors.white))
+                  ])),
             ],
           ),
         ),
