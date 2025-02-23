@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/register.dart';
-import 'package:food_menu_qr/screens/user_screens/home.dart';
+import 'package:food_menu_qr/screens/user/home.dart';
 
 void main() {
   runApp(const MyApp());
