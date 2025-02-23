@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget inputWithLabel(
-    {required BuildContext context,
-    required TextEditingController controller,
-    required String label,
-    required String hintText,
-    required bool obscureText,
-    required void Function(String?) onSaved}) {
+Widget inputWithLabel({
+  required BuildContext context,
+  required TextEditingController controller,
+  required String label,
+  required String hintText,
+  required bool obscureText,
+  TextInputType? textInputType,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -21,7 +22,6 @@ Widget inputWithLabel(
       const SizedBox(height: 5),
       TextFormField(
         controller: controller,
-        onSaved: (newValue) => onSaved,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
@@ -29,7 +29,7 @@ Widget inputWithLabel(
           return null;
         },
         obscureText: obscureText,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: textInputType ?? TextInputType.text,
         style: TextStyle(
           color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.bold,
