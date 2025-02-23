@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_menu_qr/screens/home.dart';
+import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/register.dart';
+import 'package:food_menu_qr/screens/user_screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,8 +20,10 @@ class MyApp extends StatelessWidget {
       ).copyWith(
           primaryColor: Color(0xFF391713),
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF391713),
-              secondary: const Color(0xFFE95322)),
+            primary: const Color(0xFFF5CB58),
+            seedColor: const Color(0xFFF5CB58),
+            secondary: const Color(0xFFE95322),
+          ),
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
@@ -34,9 +37,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => const Home(),
+        '/homepage': (context) => const HomePage(),
         '/login': (context) => const Login(),
-        '/register': (context) => const Register()
+        '/register': (context) => const Register(),
+        //user screens
+        '/home': (context) => const Home(),
       },
     );
   }
@@ -53,9 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/homepage');
       }
     });
   }
@@ -63,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: FadeTransition(
           opacity: AlwaysStoppedAnimation(1.0),
@@ -73,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Icon(
                 Icons.fastfood,
                 size: 200,
-                color: Color(0xFFF5CB58),
+                color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(
                 height: 20,
@@ -82,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   text: TextSpan(
                       text: "FOOD",
                       style: TextStyle(
-                          color: Color(0xFFF5CB58),
+                          color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.bold,
                           fontSize: 32),
                       children: [

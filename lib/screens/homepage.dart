@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
               Icon(
                 Icons.fastfood,
                 size: 200,
-                color: Color(0xFFF5CB58),
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(
                 height: 20,
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
                   text: TextSpan(
                       text: "FOOD",
                       style: TextStyle(
-                          color: Color(0xFFF5CB58),
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 32),
                       children: [

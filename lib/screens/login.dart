@@ -96,18 +96,10 @@ class LoginState extends ConsumerState<Login> {
                             onPressed: () {
                               if (formKey.currentState?.validate() ?? false) {
                                 formKey.currentState?.save();
-                                ScaffoldMessenger.of(context) //Mock
-                                    .showSnackBar(SnackBar(
-                                        content: Row(
-                                  children: [
-                                    Text("Email: ${emailController.text}"),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                        "Password:  ${passwordController.text}")
-                                  ],
-                                )));
+                                // Mock
+                                // TODO: call api -> set user global state
+                                Navigator.pushReplacementNamed(
+                                    context, '/home');
                               }
                             },
                             child: Text(
