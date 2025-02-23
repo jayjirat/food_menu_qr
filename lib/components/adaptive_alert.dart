@@ -13,12 +13,6 @@ void adaptiveAlert(BuildContext ctx, {String title = '', String content = ''}) {
                   child: Text('Ok'),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
-                CupertinoDialogAction(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  isDestructiveAction: true,
-                  isDefaultAction: true,
-                  child: Text('primary'),
-                ),
               ],
             ));
   } else if (Theme.of(ctx).platform == TargetPlatform.android) {
@@ -32,7 +26,7 @@ void adaptiveAlert(BuildContext ctx, {String title = '', String content = ''}) {
                     onPressed: () {
                       Navigator.of(ctx).pop();
                     },
-                    child: Text("ok"))
+                    child: Text("Ok"))
               ],
             ));
   }
