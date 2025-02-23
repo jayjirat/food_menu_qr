@@ -14,7 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.light(
         useMaterial3: true,
-      ),
+      ).copyWith(
+          primaryColor: Color(0xFFFFF5E1),
+          scaffoldBackgroundColor: Color(0xFFADD8E6),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color(0xFFFFF5E1),
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  textStyle:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w600)))),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
@@ -65,10 +74,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 "FoodQR",
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
-              Text(
-                "FoodQR – Scan, Order, Enjoy!",
-                style: TextStyle(fontSize: 14, color: Color(0xFF808080)),
-              )
             ],
           ),
         ),
