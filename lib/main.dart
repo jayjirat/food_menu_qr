@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/register.dart';
+import 'package:food_menu_qr/screens/user/subscreens/help_center.dart';
 import 'package:food_menu_qr/screens/user/user_main.dart';
 
 void main() {
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const Register(),
         //user screens
         '/home': (context) => const UserMain(),
+        '/help-center': (context) => const HelpCenter(),
       },
     );
   }

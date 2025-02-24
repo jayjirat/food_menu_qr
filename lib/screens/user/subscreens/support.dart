@@ -33,7 +33,7 @@ Widget support(BuildContext context) {
             context: context,
             title: "Help center",
             subtitle: "General Information",
-            routeName: '/home'),
+            routeName: '/help-center'),
         const SizedBox(
           height: 25,
         ),
