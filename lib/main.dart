@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/register.dart';
-import 'package:food_menu_qr/screens/user/home.dart';
+import 'package:food_menu_qr/screens/user/user_main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ).copyWith(
-          primaryColor: Color(0xFF391713),
+          primaryColor: const Color(0xFF391713),
           colorScheme: ColorScheme.fromSeed(
             primary: const Color(0xFFF5CB58),
             seedColor: const Color(0xFFF5CB58),
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         //user screens
-        '/home': (context) => const Home(),
+        '/home': (context) => const UserMain(),
       },
     );
   }
