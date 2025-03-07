@@ -1,4 +1,4 @@
-package output
+package outputPort
 
 import "backend-food-menu-qr/core/domain"
 

@@ -1,4 +1,4 @@
-package input
+package inputPort
 
 import "backend-food-menu-qr/core/domain"
 
