@@ -1,4 +1,4 @@
-package repository
+package repositoryAdapter
 
 import (
 	"backend-food-menu-qr/core/domain"
@@ -30,7 +30,7 @@ func (u *UserOutputAdapter) DeleteUser(user *domain.User) error {
 	return nil
 }
 
-func (u *UserOutputAdapter) GetUserByID(id int) (*domain.User, error) {
+func (u *UserOutputAdapter) GetUserByID(id string) (*domain.User, error) {
 	var user domain.User
 	if err := u.db.Where("id =?", id).First(&user).Error; err != nil {
 		return nil, err

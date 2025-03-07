@@ -1,17 +1,17 @@
-package http
+package httpAdapter
 
 import (
 	"backend-food-menu-qr/core/domain"
-	"backend-food-menu-qr/ports/input"
+	inputPort "backend-food-menu-qr/ports/input"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 type AuthenticationAdapter struct {
-	authenticationAdapter input.AuthenticationPort
+	authenticationAdapter inputPort.AuthenticationPort
 }
 
-func NewAuthenticationAdapter(authenticationAdapter input.AuthenticationPort) *AuthenticationAdapter {
+func NewAuthenticationAdapter(authenticationAdapter inputPort.AuthenticationPort) *AuthenticationAdapter {
 	return &AuthenticationAdapter{authenticationAdapter: authenticationAdapter}
 }
 
@@ -32,21 +32,20 @@ func (a *AuthenticationAdapter) Login(c *fiber.Ctx) error {
 	})
 }
 
-
 func (a *AuthenticationAdapter) Logout(c *fiber.Ctx) error {
 	if err := a.authenticationAdapter.Logout(); err != nil {
-        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-            "message": "Error while logging out",
-        })
-    }
-    return c.JSON(fiber.Map{
-        "message": "Logged Out Successfully",
-    })
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error while logging out",
+		})
+	}
+	return c.JSON(fiber.Map{
+		"message": "Logged Out Successfully",
+	})
 }
 
 func (a *AuthenticationAdapter) IsEmailExist(c *fiber.Ctx) error {
 	email := c.Query("email")
-    return c.JSON(fiber.Map{
-        "isEmailExist": a.authenticationAdapter.IsEmailExist(email),
-    })
+	return c.JSON(fiber.Map{
+		"isEmailExist": a.authenticationAdapter.IsEmailExist(email),
+	})
 }

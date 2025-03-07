@@ -1,29 +1,30 @@
-package http
+package httpAdapter
 
 import (
 	"backend-food-menu-qr/core/domain"
-	"backend-food-menu-qr/ports/input"
+	inputPort "backend-food-menu-qr/ports/input"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 type UserInputAdapter struct {
-	userInputPort input.UserInputPort
+	userInputPort inputPort.UserInputPort
 }
 
-func NewUserInputAdapter(userInputPort input.UserInputPort) *UserInputAdapter {
+func NewUserInputAdapter(userInputPort inputPort.UserInputPort) *UserInputAdapter {
 	return &UserInputAdapter{userInputPort: userInputPort}
 }
 
 func (u *UserInputAdapter) CreateUser(c *fiber.Ctx) error {
 	var user domain.User
-
+	fmt.Println(user)
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error parsing JSON",
 		})
 	}
-
+	fmt.Println(user)
 	createdUser, err := u.userInputPort.CreateUser(&user)
 
 	if err != nil {
