@@ -1,8 +1,11 @@
 package main
 
 import (
+	httpAdapter "backend-food-menu-qr/adapters/http"
+	repositoryAdapter "backend-food-menu-qr/adapters/repository"
 	"backend-food-menu-qr/config"
 	"backend-food-menu-qr/core/domain"
+	"backend-food-menu-qr/core/usecase"
 	"fmt"
 	"log"
 
@@ -32,10 +35,15 @@ func initDB() {
 
 func main() {
 	initDB()
+	userRepo := repositoryAdapter.NewUserOutputAdapter(db)
+	userUsecase := usecase.NewUserUseCase(userRepo)
+	userInputAdapter := httpAdapter.NewUserInputAdapter(userUsecase)
 	app := fiber.New()
 
-	app.Post("/api/user/login", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": "Hello, World!"})
-	})
+	app.Get("/api/users", userInputAdapter.GetAllUsers)
+	app.Get("/api/user/:id", userInputAdapter.GetUserByID)
+	app.Post("api/user", userInputAdapter.CreateUser)
+	app.Put("/api/user", userInputAdapter.UpdateUser)
+
 	app.Listen(":" + config.AppConfig.APIPort)
 }
