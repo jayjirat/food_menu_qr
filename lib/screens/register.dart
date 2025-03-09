@@ -16,10 +16,9 @@ class Register extends ConsumerStatefulWidget {
 class RegisterState extends ConsumerState<Register> {
   final formKey = GlobalKey<FormState>();
   final fullnameController = TextEditingController();
-  final passwordcontroller = TextEditingController();
+  final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
   final dateOfBirthController = TextEditingController();
 
   final String termsOfUse = """
