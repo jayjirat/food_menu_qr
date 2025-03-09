@@ -8,13 +8,27 @@ import (
 )
 
 type AuthenticationAdapter struct {
-	authenticationAdapter inputPort.AuthenticationPort
+	authenticationInputPort inputPort.AuthenticationPort
 }
 
-func NewAuthenticationAdapter(authenticationAdapter inputPort.AuthenticationPort) *AuthenticationAdapter {
-	return &AuthenticationAdapter{authenticationAdapter: authenticationAdapter}
+func NewAuthenticationAdapter(authenticationInputPort inputPort.AuthenticationPort) *AuthenticationAdapter {
+	return &AuthenticationAdapter{authenticationInputPort: authenticationInputPort}
 }
 
+func (a *AuthenticationAdapter) Register(c *fiber.Ctx) error {
+	var user domain.User
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing JSON",
+		})
+	}
+	if err := a.authenticationInputPort.Register(&user); err != nil {
+		return err
+	}
+	return c.JSON(fiber.Map{
+		"message": "Register Successfully",
+	})
+}
 func (a *AuthenticationAdapter) Login(c *fiber.Ctx) error {
 	var user domain.User
 	if err := c.BodyParser(&user); err != nil {
@@ -22,30 +36,17 @@ func (a *AuthenticationAdapter) Login(c *fiber.Ctx) error {
 			"message": "Error parsing JSON",
 		})
 	}
-	if err := a.authenticationAdapter.Login(&user); err != nil {
+	token, err := a.authenticationInputPort.Login(user.Email, user.Password)
+	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Invalid credentials",
 		})
 	}
+
+	// JWT authentication
+	c.Set("Authorization", "Bearer "+token)
 	return c.JSON(fiber.Map{
 		"message": "Logged In Successfully",
 	})
-}
 
-func (a *AuthenticationAdapter) Logout(c *fiber.Ctx) error {
-	if err := a.authenticationAdapter.Logout(); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while logging out",
-		})
-	}
-	return c.JSON(fiber.Map{
-		"message": "Logged Out Successfully",
-	})
-}
-
-func (a *AuthenticationAdapter) IsEmailExist(c *fiber.Ctx) error {
-	email := c.Query("email")
-	return c.JSON(fiber.Map{
-		"isEmailExist": a.authenticationAdapter.IsEmailExist(email),
-	})
 }

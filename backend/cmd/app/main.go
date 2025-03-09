@@ -37,12 +37,16 @@ func main() {
 	initDB()
 	userRepo := repositoryAdapter.NewUserOutputAdapter(db)
 	userUsecase := usecase.NewUserUseCase(userRepo)
+	authenticationUsecase := usecase.NewAuthenticationUseCase(userRepo)
 	userInputAdapter := httpAdapter.NewUserInputAdapter(userUsecase)
+	authenticationInputAdapter := httpAdapter.NewAuthenticationAdapter(authenticationUsecase)
 	app := fiber.New()
 
+	app.Post("/api/register", authenticationInputAdapter.Register)
+	app.Post("/api/login", authenticationInputAdapter.Login)
 	app.Get("/api/users", userInputAdapter.GetAllUsers)
 	app.Get("/api/user/:id", userInputAdapter.GetUserByID)
-	app.Post("api/user", userInputAdapter.CreateUser)
+	app.Post("/api/user", userInputAdapter.CreateUser)
 	app.Put("/api/user", userInputAdapter.UpdateUser)
 
 	app.Listen(":" + config.AppConfig.APIPort)
