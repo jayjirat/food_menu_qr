@@ -7,4 +7,5 @@ type UserOutputPort interface {
 	DeleteUser(user *domain.User) error
 	GetAllUsers() ([]*domain.User, error)
 	GetUserByID(id string) (*domain.User, error)
+	GetUserByEmail(email string) (*domain.User, error)
 }

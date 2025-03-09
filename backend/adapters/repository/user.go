@@ -60,3 +60,12 @@ func (u *UserOutputAdapter) GetAllUsers() ([]*domain.User, error) {
 
 	return users, nil
 }
+
+func (u *UserOutputAdapter) GetUserByEmail(email string) (*domain.User, error) {
+	var user domain.User
+	if err := u.db.Where("email =?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
