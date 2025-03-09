@@ -3,9 +3,6 @@ package repositoryAdapter
 import (
 	"backend-food-menu-qr/core/domain"
 
-	"log"
-
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -17,16 +14,8 @@ func NewUserOutputAdapter(db *gorm.DB) *UserOutputAdapter {
 	return &UserOutputAdapter{db: db}
 }
 
-func (u *UserOutputAdapter) SaveUser(user *domain.User, isUpdated bool) (*domain.User, error) {
+func (u *UserOutputAdapter) SaveUser(user *domain.User) (*domain.User, error) {
 
-	if !isUpdated {
-		hashpassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		user.Password = string(hashpassword)
-	}
 	if err := u.db.Create(user).Error; err != nil {
 		return nil, err
 	}
