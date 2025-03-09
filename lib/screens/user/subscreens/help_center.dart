@@ -13,6 +13,7 @@ class HelpCenter extends ConsumerStatefulWidget {
 class HelpCenterState extends ConsumerState<HelpCenter> {
   int selectedIndex = 1;
   int faqSelectedIndex = 1;
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return mainStack(
@@ -101,15 +102,64 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
         const SizedBox(
           height: 20,
         ),
-        contactUsElem(icon: Icons.language_outlined, text: "Website"),
+        contactUsElem2(
+            icon: Icons.language_outlined,
+            text: "Website",
+            hiddenText: "https://github.com/jayjirat"),
         const SizedBox(
           height: 20,
         ),
-        contactUsElem(icon: Icons.facebook_outlined, text: "Facebook"),
+        contactUsElem2(
+            icon: Icons.facebook_outlined,
+            text: "Facebook",
+            hiddenText: "Jirat Charoenkaew"),
         const SizedBox(
           height: 20,
         ),
-        contactUsElem(icon: FontAwesomeIcons.instagram, text: "Instragram"),
+        contactUsElem2(
+            icon: FontAwesomeIcons.instagram,
+            text: "Instragram",
+            hiddenText: "JJ_Jirat"),
+      ],
+    );
+  }
+
+  Widget contactUsElem2(
+      {required IconData icon,
+      required String text,
+      required String hiddenText}) {
+    return ExpansionTile(
+      title: Text(
+        text,
+        style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w500),
+      ),
+      leading: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.secondary,
+        size: 40,
+      ),
+      trailing: Icon(
+        isExpanded
+            ? Icons.arrow_drop_up_outlined
+            : Icons.arrow_drop_down_outlined,
+        color: Theme.of(context).primaryColor,
+        size: 25,
+      ),
+      expandedAlignment: Alignment.centerLeft,
+      tilePadding: EdgeInsets.all(0),
+      onExpansionChanged: (value) => setState(() {
+        isExpanded = value;
+      }),
+      // dividerColor: Colors.transparent,
+      children: [
+        Text(hiddenText,
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500))
       ],
     );
   }
