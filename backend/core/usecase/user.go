@@ -19,7 +19,11 @@ func (u *UserUseCase) CreateUser(user *domain.User) (*domain.User, error) {
 		return nil, errors.New("invalid data for user")
 	}
 
-	if existingUser, _ := u.userOutputPort.GetUserByID(user.ID); existingUser != nil {
+	existingUser, err := u.userOutputPort.GetUserByID(user.ID)
+	if err != nil {
+		return nil, errors.New("database internal error")
+	}
+	if existingUser != nil {
 		return nil, errors.New("user already exists")
 	}
 
