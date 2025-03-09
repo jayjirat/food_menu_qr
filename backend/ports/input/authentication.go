@@ -3,7 +3,7 @@ package inputPort
 import "backend-food-menu-qr/core/domain"
 
 type AuthenticationPort interface {
-	Login(user *domain.User) error
+	Register(user *domain.User) error
+	Login(email string, password string) (string, error)
 	Logout() error
-	IsEmailExist(email string) bool
 }
