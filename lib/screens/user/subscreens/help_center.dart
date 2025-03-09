@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_menu_qr/components/filter_button.dart';
 import 'package:food_menu_qr/components/main_stack.dart';
 
 class HelpCenter extends ConsumerStatefulWidget {
@@ -26,7 +27,7 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  topButton(
+                  filterButton(
                       context: context,
                       text: "FAQ",
                       width: 165,
@@ -36,7 +37,7 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
                       style: selectedIndex == 1
                           ? selectedStyle()
                           : unselectedStyle()),
-                  topButton(
+                  filterButton(
                       context: context,
                       text: "Contact Us",
                       width: 165,
@@ -65,7 +66,7 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        topButton(
+        filterButton(
             context: context,
             text: "General",
             width: 110,
@@ -73,7 +74,7 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
                   faqSelectedIndex = 1;
                 }),
             style: faqSelectedIndex == 1 ? selectedStyle() : unselectedStyle()),
-        topButton(
+        filterButton(
             context: context,
             text: "Account",
             width: 110,
@@ -81,7 +82,7 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
                   faqSelectedIndex = 2;
                 }),
             style: faqSelectedIndex == 2 ? selectedStyle() : unselectedStyle()),
-        topButton(
+        filterButton(
             context: context,
             text: "Services",
             width: 110,
@@ -189,20 +190,6 @@ class HelpCenterState extends ConsumerState<HelpCenter> {
         ),
         Icon(Icons.arrow_drop_down_outlined),
       ],
-    );
-  }
-
-  Widget topButton(
-      {required BuildContext context,
-      required String text,
-      required double width,
-      required VoidCallback onPressed,
-      required ButtonStyle style}) {
-    return SizedBox(
-      height: 30,
-      width: width,
-      child:
-          ElevatedButton(onPressed: onPressed, style: style, child: Text(text)),
     );
   }
 
