@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/register.dart';
@@ -6,7 +7,7 @@ import 'package:food_menu_qr/screens/user/subscreens/help_center.dart';
 import 'package:food_menu_qr/screens/user/user_main.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
