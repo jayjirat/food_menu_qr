@@ -2,6 +2,7 @@ package main
 
 import (
 	httpAdapter "backend-food-menu-qr/adapters/http"
+	"backend-food-menu-qr/adapters/middleware"
 	repositoryAdapter "backend-food-menu-qr/adapters/repository"
 	"backend-food-menu-qr/config"
 	"backend-food-menu-qr/core/domain"
@@ -44,6 +45,7 @@ func main() {
 
 	app.Post("/api/register", authenticationInputAdapter.Register)
 	app.Post("/api/login", authenticationInputAdapter.Login)
+	app.Use(middleware.AuthenticateToken)
 	app.Get("/api/users", userInputAdapter.GetAllUsers)
 	app.Get("/api/user/:id", userInputAdapter.GetUserByID)
 	app.Post("/api/user", userInputAdapter.CreateUser)
