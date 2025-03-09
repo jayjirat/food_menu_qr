@@ -3,7 +3,6 @@ package httpAdapter
 import (
 	"backend-food-menu-qr/core/domain"
 	inputPort "backend-food-menu-qr/ports/input"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -18,13 +17,11 @@ func NewUserInputAdapter(userInputPort inputPort.UserInputPort) *UserInputAdapte
 
 func (u *UserInputAdapter) CreateUser(c *fiber.Ctx) error {
 	var user domain.User
-	fmt.Println(user)
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error parsing JSON",
 		})
 	}
-	fmt.Println(user)
 	createdUser, err := u.userInputPort.CreateUser(&user)
 
 	if err != nil {
