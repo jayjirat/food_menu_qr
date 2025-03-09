@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_menu_qr/screens/user/subscreens/history.dart';
 import 'package:food_menu_qr/screens/user/subscreens/home.dart';
 import 'package:food_menu_qr/screens/user/subscreens/support.dart';
 
@@ -17,7 +18,7 @@ class UserMainState extends ConsumerState<UserMain> {
   Widget build(BuildContext context) {
     List<Widget> subScreens = [
       home(context),
-      home(context),
+      History(),
       home(context),
       home(context),
       support(context)
