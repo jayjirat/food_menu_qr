@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/components/label_input.dart';
 import 'package:food_menu_qr/components/main_stack.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_menu_qr/components/show_snackbar.dart';
+import 'package:food_menu_qr/providers/user_provider.dart';
 
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});
@@ -21,6 +23,18 @@ class LoginState extends ConsumerState<Login> {
   String password = '';
   @override
   Widget build(BuildContext context) {
+    // final arguments = ModalRoute.of(context)?.settings.arguments;
+    // String message = "";
+    // if (arguments != null) {
+    //   arguments as Map<String, dynamic>;
+    //   message = arguments["message"];
+    // }
+
+    // if (message != "") {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     showSnackBar(context, message);
+    //   });
+    // }
     return mainStack(
       context: context,
       title: "Sign In",
@@ -97,9 +111,7 @@ class LoginState extends ConsumerState<Login> {
                               if (formKey.currentState?.validate() ?? false) {
                                 formKey.currentState?.save();
                                 // Mock
-                                // TODO: call api -> set user global state
-                                Navigator.pushReplacementNamed(
-                                    context, '/home');
+                                handleLogin(context);
                               }
                             },
                             child: Text(
@@ -162,5 +174,21 @@ class LoginState extends ConsumerState<Login> {
       onPressed: () {},
       icon: Icon(icon),
     );
+  }
+
+  void handleLogin(BuildContext context) async {
+    final response = await ref
+        .read(userNotifierProvider.notifier)
+        .login(email: emailController.text, password: passwordController.text);
+    if (context.mounted) {
+      if (response["status"]) {
+        Navigator.pushReplacementNamed(context, "/home");
+      } else {
+        showSnackBar(context, response["message"]);
+        emailController.clear();
+        passwordController.clear();
+      }
+    }
+    // Navigate to home page
   }
 }
