@@ -30,22 +30,22 @@ func (c *AuthenticationUseCase) Register(user *domain.User) error {
 	return err
 }
 
-func (c *AuthenticationUseCase) Login(email string, password string) (string, error) {
+func (c *AuthenticationUseCase) Login(email string, password string) (*domain.User, string, error) {
 	user, err := c.userOutputPort.GetUserByEmail(email)
 	if err != nil {
-		return "", err
+		return &domain.User{}, "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return "", err
+		return &domain.User{},"", err
 	}
 
 	token, err := GenerateJWT(user)
 	if err != nil {
-		return "", err
+		return &domain.User{},"", err
 	}
-	return token, nil
+	return user,token, nil
 }
 
 func GenerateJWT(user *domain.User) (string, error) {

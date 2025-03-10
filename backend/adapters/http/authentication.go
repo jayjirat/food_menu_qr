@@ -23,7 +23,9 @@ func (a *AuthenticationAdapter) Register(c *fiber.Ctx) error {
 		})
 	}
 	if err := a.authenticationInputPort.Register(&user); err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err,
+		})
 	}
 	return c.JSON(fiber.Map{
 		"message": "Register Successfully",
@@ -36,7 +38,7 @@ func (a *AuthenticationAdapter) Login(c *fiber.Ctx) error {
 			"message": "Error parsing JSON",
 		})
 	}
-	token, err := a.authenticationInputPort.Login(user.Email, user.Password)
+	loginUser, token, err := a.authenticationInputPort.Login(user.Email, user.Password)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Invalid credentials",
@@ -47,6 +49,7 @@ func (a *AuthenticationAdapter) Login(c *fiber.Ctx) error {
 	c.Set("Authorization", "Bearer "+token)
 	return c.JSON(fiber.Map{
 		"message": "Logged In Successfully",
+		"user":    loginUser,
 	})
 
 }
