@@ -5,6 +5,7 @@ import 'package:food_menu_qr/components/adaptive_alert.dart';
 import 'package:food_menu_qr/components/label_input.dart';
 import 'package:food_menu_qr/components/main_stack.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_menu_qr/components/show_snackbar.dart';
 import 'package:food_menu_qr/providers/user_provider.dart';
 
 class Register extends ConsumerStatefulWidget {
@@ -151,30 +152,11 @@ We value your privacy. This policy outlines how we collect, use, and protect you
                                       backgroundColor: Theme.of(context)
                                           .colorScheme
                                           .secondary),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (formKey.currentState?.validate() ??
                                         false) {
                                       formKey.currentState?.save();
-                                      if (validatePassword()) {
-                                        print("come");
-                                        ref
-                                            .read(userNotifierProvider.notifier)
-                                            .register(
-                                                email: emailController.text,
-                                                username:
-                                                    fullnameController.text,
-                                                password:
-                                                    passwordController.text,
-                                                dateOfBirth:
-                                                    dateOfBirthController.text);
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    "Password does not match")));
-                                        passwordController.clear();
-                                        confirmPasswordController.clear();
-                                      }
+                                      handleRegister(context);
                                     }
                                   },
                                   child: Text(
@@ -235,7 +217,25 @@ We value your privacy. This policy outlines how we collect, use, and protect you
     );
   }
 
-  bool validatePassword() {
-    return passwordController.text == confirmPasswordController.text;
+  void handleRegister(BuildContext context) async {
+    if (passwordController.text == confirmPasswordController.text) {
+      final response = await ref.read(userNotifierProvider.notifier).register(
+          email: emailController.text,
+          username: fullnameController.text,
+          password: passwordController.text,
+          dateOfBirth: dateOfBirthController.text);
+      if (context.mounted) {
+        if (response["status"]) {
+          Navigator.pushReplacementNamed(context, '/login',
+              arguments: {"message": response["message"]});
+        } else {
+          showSnackBar(context, response["message"]);
+        }
+      }
+    } else {
+      showSnackBar(context, "Password does not match");
+      passwordController.clear();
+      confirmPasswordController.clear();
+    }
   }
 }
