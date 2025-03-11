@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_menu_qr/providers/user_provider.dart';
 import 'package:food_menu_qr/screens/user/subscreens/history.dart';
 import 'package:food_menu_qr/screens/user/subscreens/home.dart';
+import 'package:food_menu_qr/screens/user/subscreens/qr_code.dart';
 import 'package:food_menu_qr/screens/user/subscreens/support.dart';
 
 class UserMain extends ConsumerStatefulWidget {
@@ -16,10 +18,11 @@ class UserMainState extends ConsumerState<UserMain> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.read(userNotifierProvider)!;
     List<Widget> subScreens = [
       home(context),
       History(),
-      home(context),
+      QrCode(),
       home(context),
       support(context)
     ];
@@ -32,32 +35,31 @@ class UserMainState extends ConsumerState<UserMain> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: TextSpan(
-                  text: "Welcome, ",
-                  style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  children: [
-                    TextSpan(
-                      text: "Fullname\n",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                    TextSpan(
-                      text:
-                          "Rise and shine! It's time to enjoy\n something delicious.",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                  ],
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    text: "Welcome, ",
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    children: [
+                      TextSpan(
+                        text: "${(user.username).toUpperCase()}\n",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      TextSpan(
+                        text:
+                            "Rise and shine! It's time to enjoy\n something delicious.",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 60,
               ),
               InkWell(
                 onTap: () {},
