@@ -182,7 +182,12 @@ class LoginState extends ConsumerState<Login> {
         .login(email: emailController.text, password: passwordController.text);
     if (context.mounted) {
       if (response["status"]) {
-        Navigator.pushReplacementNamed(context, "/home");
+        final role = ref.read(userNotifierProvider)!.role;
+        if (role == "user") {
+          Navigator.pushReplacementNamed(context, "/home");
+        } else if (role == "owner") {
+          Navigator.pushReplacementNamed(context, "/owner-home");
+        }
       } else {
         showSnackBar(context, response["message"]);
         emailController.clear();

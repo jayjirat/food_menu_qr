@@ -24,7 +24,6 @@ class UserMainState extends ConsumerState<UserMain> {
       home(context),
       History(),
       QrCode(),
-      home(context),
       support(context)
     ];
     return Scaffold(
@@ -126,10 +125,6 @@ class UserMainState extends ConsumerState<UserMain> {
             BottomNavigationBarItem(
               icon: Icon(Icons.qr_code_outlined),
               label: "QR code",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline),
-              label: "Favorites",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.support_agent_outlined),

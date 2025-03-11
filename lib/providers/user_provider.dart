@@ -82,7 +82,8 @@ class UserNotifier extends StateNotifier<User?> {
             username: user["fullname"],
             email: user["email"],
             dateOfBirth: user["date_of_birth"],
-            password: user["password"]);
+            password: user["password"],
+            role: user["role"]);
         return {"status": true, "message": "Login successful"};
       } else {
         return {"status": false, "message": bodyResonse["message"]};
