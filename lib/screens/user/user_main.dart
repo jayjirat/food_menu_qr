@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_menu_qr/components/bottom_nav.dart';
 import 'package:food_menu_qr/providers/user_provider.dart';
 import 'package:food_menu_qr/screens/user/subscreens/history.dart';
 import 'package:food_menu_qr/screens/user/subscreens/home.dart';
@@ -27,93 +28,87 @@ class UserMainState extends ConsumerState<UserMain> {
       support(context)
     ];
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 150,
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Welcome, ",
-                    style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                    children: [
-                      TextSpan(
-                        text: "${(user.username).toUpperCase()}\n",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
-                      TextSpan(
-                        text:
-                            "Rise and shine! It's time to enjoy\n something delicious.",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).colorScheme.secondary),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.notifications_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 25,
+        appBar: AppBar(
+          toolbarHeight: 150,
+          automaticallyImplyLeading: false,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Welcome, ",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      children: [
+                        TextSpan(
+                          text: "${(user.username).toUpperCase()}\n",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
+                        TextSpan(
+                          text:
+                              "Rise and shine! It's time to enjoy\n something delicious.",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.person_outline,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 25,
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.notifications_outlined,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 25,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.person_outline,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 25,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      body: subScreens[selectedIndex],
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          unselectedItemColor: Colors.white,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          currentIndex: selectedIndex,
+        body: subScreens[selectedIndex],
+        bottomNavigationBar: bottomNav(
+          context: context,
+          selectedIndex: selectedIndex,
           onTap: (index) {
             setState(() {
               selectedIndex = index;
@@ -141,8 +136,6 @@ class UserMainState extends ConsumerState<UserMain> {
               label: "Support",
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
