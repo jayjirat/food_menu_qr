@@ -186,7 +186,8 @@ class LoginState extends ConsumerState<Login> {
         if (role == "user") {
           Navigator.pushReplacementNamed(context, "/home");
         } else if (role == "owner") {
-          Navigator.pushReplacementNamed(context, "/owner-home");
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/owner-home", (route) => false);
         }
       } else {
         showSnackBar(context, response["message"]);
