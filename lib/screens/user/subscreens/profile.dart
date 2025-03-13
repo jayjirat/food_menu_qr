@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/components/filter_button.dart';
 import 'package:food_menu_qr/components/main_stack.dart';
 import 'package:food_menu_qr/providers/user_provider.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
@@ -36,7 +37,7 @@ class ProfileState extends ConsumerState<Profile> {
     final oldPassword = ref.watch(passwordProvider);
     final newPasswordController = TextEditingController();
     final newPasswordConfirmController = TextEditingController();
-    if (oldPassword == "123456") {
+    if (BCrypt.checkpw(oldPassword, user.password)) {
       setState(() {
         isMatched = true;
       });
