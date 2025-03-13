@@ -8,8 +8,8 @@ type RestaurantInputPort interface {
 	UpdateRestaurant(restaurant *domain.Restaurant) (*domain.Restaurant, error)
 	DeleteRestaurant(restaurant *domain.Restaurant) error
 	GetMyRestaurant(user *domain.User) ([]*domain.Restaurant, error)
+	GetRestaurantByID(id string) (*domain.Restaurant, error)
 
 	// Admin
-	GetRestaurantByID(id string) (*domain.Restaurant, error)
 	GetAllRestaurants() ([]*domain.Restaurant, error)
 }
