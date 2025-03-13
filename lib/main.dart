@@ -5,6 +5,7 @@ import 'package:food_menu_qr/screens/login.dart';
 import 'package:food_menu_qr/screens/owner/owner_main.dart';
 import 'package:food_menu_qr/screens/register.dart';
 import 'package:food_menu_qr/screens/user/subscreens/help_center.dart';
+import 'package:food_menu_qr/screens/user/subscreens/profile.dart';
 import 'package:food_menu_qr/screens/user/user_main.dart';
 
 void main() {
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         //user screens
         '/home': (context) => const UserMain(),
         '/help-center': (context) => const HelpCenter(),
+        '/profile': (context) => const Profile(),
 
         // owner screens
         '/owner-home': (context) => const OwnerMain(),

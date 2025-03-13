@@ -155,7 +155,9 @@ class UserMainState extends ConsumerState<UserMain> {
                 drawerItem(
                     icon: Icons.person_outline,
                     label: "My Profile",
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/profile');
+                    }),
                 const SizedBox(
                   height: 14,
                 ),
