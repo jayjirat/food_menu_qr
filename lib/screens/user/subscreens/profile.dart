@@ -86,7 +86,7 @@ class ProfileState extends ConsumerState<Profile> {
                       myInputProfile(
                         context: context,
                         controller: oldPasswordController,
-                        label: "Enter old password",
+                        label: "Enter Current Password",
                         enabled: true,
                         obscureText: true,
                       )
@@ -101,7 +101,7 @@ class ProfileState extends ConsumerState<Profile> {
                       myInputProfile(
                         context: context,
                         controller: newPasswordController,
-                        label: "Enter new password",
+                        label: "New Password",
                         enabled: true,
                         obscureText: true,
                       ),
@@ -111,7 +111,7 @@ class ProfileState extends ConsumerState<Profile> {
                       myInputProfile(
                         context: context,
                         controller: newPasswordConfirmController,
-                        label: "Confirm new password",
+                        label: "Confirm New Password",
                         enabled: true,
                         obscureText: true,
                       )

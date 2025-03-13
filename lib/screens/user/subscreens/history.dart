@@ -46,12 +46,20 @@ class HistoryState extends ConsumerState<History> {
               style: selectedIndex == 3 ? selectedStyle() : unselectedStyle())
         ],
       ),
-      if (selectedIndex == 1)
-        activeScreen()
-      else if (selectedIndex == 2)
-        completedScreen()
-      else if (selectedIndex == 3)
-        cancelledScreen()
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: (() {
+          if (selectedIndex == 1) {
+            return activeScreen();
+          } else if (selectedIndex == 2) {
+            return completedScreen();
+          } else if (selectedIndex == 3) {
+            return cancelledScreen();
+          } else {
+            return Container(); // Default case
+          }
+        })(),
+      )
     ]));
   }
 
@@ -131,77 +139,76 @@ class HistoryState extends ConsumerState<History> {
   }
 
   Widget activeScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          customDivider(context),
-          foodElem(
-              resName: "Pizza Huh",
-              sumaryQuantity: 2,
-              summaryPrice: 20.00,
-              time: "29 Nov, 01.20 pm"),
-          customDivider(context),
-          foodElem(
-              resName: "MALA",
-              sumaryQuantity: 3,
-              summaryPrice: 12.80,
-              time: "30 Nov, 11.20 pm"),
-          customDivider(context),
-          foodElem(
-              resName: "Chef off",
-              sumaryQuantity: 10,
-              summaryPrice: 99.99,
-              time: "29 Nov, 01.20 pm"),
-          customDivider(context),
-        ],
-      ),
+    return Column(
+      children: [
+        customDivider(context),
+        foodElem(
+            resName: "Pizza Huh",
+            sumaryQuantity: 2,
+            summaryPrice: 20.00,
+            time: "29 Nov, 01.20 pm"),
+        customDivider(context),
+        foodElem(
+            resName: "MALA",
+            sumaryQuantity: 3,
+            summaryPrice: 12.80,
+            time: "30 Nov, 11.20 pm"),
+        customDivider(context),
+        foodElem(
+            resName: "Chef off",
+            sumaryQuantity: 10,
+            summaryPrice: 99.99,
+            time: "29 Nov, 01.20 pm"),
+        customDivider(context),
+      ],
     );
   }
 
   Widget completedScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          customDivider(context),
-          foodElem(
-              resName: "Kai LAVA",
-              sumaryQuantity: 2,
-              summaryPrice: 7,
-              time: "29 Nov, 01.20 pm"),
-          customDivider(context),
-          foodElem(
-              resName: "KFD",
-              sumaryQuantity: 3,
-              summaryPrice: 12.80,
-              time: "30 Nov, 11.20 pm"),
-          customDivider(context),
-        ],
-      ),
-    );
+    return noHistory(status: "complete");
   }
 
   Widget cancelledScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          customDivider(context),
-          foodElem(
-              resName: "7-11",
-              sumaryQuantity: 12,
-              summaryPrice: 17.8,
-              time: "29 Nov, 01.20 pm"),
-          customDivider(context),
-          foodElem(
-              resName: "Dairy King",
-              sumaryQuantity: 3,
-              summaryPrice: 8.00,
-              time: "30 Nov, 11.20 pm"),
-          customDivider(context),
-        ],
-      ),
+    return Column(
+      children: [
+        customDivider(context),
+        foodElem(
+            resName: "7-11",
+            sumaryQuantity: 12,
+            summaryPrice: 17.8,
+            time: "29 Nov, 01.20 pm"),
+        customDivider(context),
+        foodElem(
+            resName: "Dairy King",
+            sumaryQuantity: 3,
+            summaryPrice: 8.00,
+            time: "30 Nov, 11.20 pm"),
+        customDivider(context),
+      ],
+    );
+  }
+
+  Widget noHistory({required String status}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(
+          height: 100,
+        ),
+        Icon(
+          Icons.receipt_long_outlined,
+          color: Color(0xFFFFDECF),
+          size: 180,
+        ),
+        Text(
+          "You don't have any\n $status orders at this\ntime",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 30,
+              fontWeight: FontWeight.w500),
+        )
+      ],
     );
   }
 
