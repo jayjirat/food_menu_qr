@@ -116,3 +116,5 @@ class UserNotifier extends StateNotifier<User?> {
 final userNotifierProvider = StateNotifierProvider<UserNotifier, User?>((ref) {
   return UserNotifier();
 });
+
+final passwordProvider = StateProvider<String>((ref) => '');
