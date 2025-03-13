@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/models/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserNotifier extends StateNotifier<User?> {
   UserNotifier() : super(null);
+  final storage = FlutterSecureStorage();
   final baseURL = "http://10.0.2.2:5678/api";
   String token = "";
 
@@ -74,10 +76,11 @@ class UserNotifier extends StateNotifier<User?> {
         body: jsonEncode(body),
         headers: header,
       );
-      final bodyResonse = jsonDecode(response.body) as Map<String, dynamic>;
+      final bodyResponse = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
         token = response.headers["authorization"]!.split(" ")[1];
-        Map<String, dynamic> user = bodyResonse["user"];
+        await storage.write(key: "token", value: token);
+        final user = bodyResponse["user"];
         state = User(
             username: user["fullname"],
             email: user["email"],
@@ -86,10 +89,26 @@ class UserNotifier extends StateNotifier<User?> {
             role: user["role"]);
         return {"status": true, "message": "Login successful"};
       } else {
-        return {"status": false, "message": bodyResonse["message"]};
+        return {"status": false, "message": bodyResponse["message"]};
       }
     } catch (e) {
       return {"status": false, "message": e};
+    }
+  }
+
+  Future<Map<String, dynamic>> logout() async {
+    try {
+      await storage.delete(key: "token");
+      state = null;
+      return {
+        "status": true,
+        "message": "Logout successful",
+      };
+    } catch (e) {
+      return {
+        "status": false,
+        "message": "Error while logging out. Please try again",
+      };
     }
   }
 }

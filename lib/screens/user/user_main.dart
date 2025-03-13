@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/components/bottom_nav.dart';
-import 'package:food_menu_qr/components/custom_divider.dart';
+import 'package:food_menu_qr/components/show_snackbar.dart';
 import 'package:food_menu_qr/providers/user_provider.dart';
 import 'package:food_menu_qr/screens/user/subscreens/history.dart';
 import 'package:food_menu_qr/screens/user/subscreens/home.dart';
@@ -138,6 +138,7 @@ class UserMainState extends ConsumerState<UserMain> {
                                 fontSize: 28, fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
+                                  // ignore: unnecessary_string_interpolations
                                   text: "${user.email}",
                                   style: TextStyle(
                                       fontSize: 16,
@@ -166,7 +167,24 @@ class UserMainState extends ConsumerState<UserMain> {
                   height: 14,
                 ),
                 drawerItem(
-                    icon: Icons.logout_outlined, label: "Log Out", onTap: () {})
+                    icon: Icons.logout_outlined,
+                    label: "Log Out",
+                    onTap: () async {
+                      final response = await ref
+                          .read(userNotifierProvider.notifier)
+                          .logout();
+                      if (context.mounted) {
+                        if (response["status"]) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/homepage',
+                            (route) => false,
+                          );
+                        } else {
+                          showSnackBar(context, response["message"]);
+                        }
+                      }
+                    })
               ],
             ),
           ),
@@ -211,7 +229,7 @@ class UserMainState extends ConsumerState<UserMain> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            ),
+          ),
           child: Center(
             child: Icon(
               icon,

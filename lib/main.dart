@@ -8,6 +8,7 @@ import 'package:food_menu_qr/screens/user/subscreens/help_center.dart';
 import 'package:food_menu_qr/screens/user/user_main.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: const MyApp()));
 }
 
