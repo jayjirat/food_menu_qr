@@ -31,7 +31,7 @@ func initDB() {
 		log.Fatal("failed to connect database")
 	}
 
-	db.AutoMigrate(&domain.User{})
+	db.AutoMigrate(&domain.User{}, &domain.Restaurant{}, &domain.Food{}, &domain.Order{}, &domain.OrderItem{}, &domain.Table{})
 }
 
 func main() {
