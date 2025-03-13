@@ -8,6 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type RestaurantStatus string
+
+const (
+	RestaurantStatusOpene    RestaurantStatus = "Open"
+	RestaurantStatusInactive RestaurantStatus = "Inactive"
+	RestaurantStatusClose    RestaurantStatus = "Close"
+)
+
 type FoodCategory string
 
 const (
@@ -36,12 +44,13 @@ const (
 )
 
 type Restaurant struct {
-	ID      string  `gorm:"type:uuid;primaryKey" json:"id"`
-	Name    string  `json:"name"`
-	LogoUrl string  `json:"logoUrl"`
-	Foods   []Food  `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"foods"`
-	Orders  []Order `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"orders"`
-	Tables  []Table `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"tables"`
+	ID      string           `gorm:"type:uuid;primaryKey" json:"id"`
+	Name    string           `json:"name"`
+	LogoUrl string           `json:"logoUrl"`
+	Foods   []Food           `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"foods"`
+	Orders  []Order          `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"orders"`
+	Tables  []Table          `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"tables"`
+	Status  RestaurantStatus `json:"status"`
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
