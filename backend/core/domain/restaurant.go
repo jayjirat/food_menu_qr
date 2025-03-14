@@ -16,6 +16,10 @@ const (
 	RestaurantStatusClose    RestaurantStatus = "Close"
 )
 
+type UpdateRestaurantStatusRequest struct {
+	Status string `json:"status"`
+}
+
 type FoodCategory string
 
 const (
@@ -27,6 +31,10 @@ const (
 	CategoryOther      FoodCategory = "Other"
 )
 
+type UpdateFoodCategoryRequest struct {
+	Status string `json:"status"`
+}
+
 type OrderStatus string
 
 const (
@@ -34,6 +42,23 @@ const (
 	OrderStatusConfirmed OrderStatus = "Confirmed"
 	OrderStatusCanceled  OrderStatus = "Canceled"
 )
+
+type UpdateOrderStatusRequest struct {
+	Status string `json:"status"`
+}
+
+func (os *OrderStatus) ToOrderStatus(orderStatus string) OrderStatus {
+	switch orderStatus {
+	case string(OrderStatusActive):
+		return OrderStatusConfirmed
+	case string(OrderStatusConfirmed):
+		return OrderStatusCanceled
+	case string(OrderStatusCanceled):
+		return OrderStatusActive
+	default:
+		return OrderStatusActive
+	}
+}
 
 type TableStatus string
 
