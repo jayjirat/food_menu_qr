@@ -125,8 +125,9 @@ type Order struct {
 	OrderItems   []OrderItem `json:"orderItems"`
 	TotalPrice   float64     `json:"totalPrice"`
 	Status       OrderStatus `json:"status"`
-	OrderTime    time.Time   `json:"orderTime"`
 	TakeAway     bool        `json:"takeAway"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	UpdatedAt    time.Time   `json:"updatedAt"`
 }
 
 func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
