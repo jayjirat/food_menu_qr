@@ -50,8 +50,8 @@ func (r *RestaurantInputAdapter) UpdateRestaurant(c *fiber.Ctx) error {
 }
 
 func (r *RestaurantInputAdapter) DeleteRestaurant(c *fiber.Ctx) error {
-	restaurantID := c.Params("restaurantId")
-	if err := r.restaurantInputPort.DeleteRestaurant(restaurantID); err != nil {
+	restaurantId := c.Params("restaurantId")
+	if err := r.restaurantInputPort.DeleteRestaurant(restaurantId); err != nil {
 		// TODO: handle error
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
@@ -63,8 +63,8 @@ func (r *RestaurantInputAdapter) DeleteRestaurant(c *fiber.Ctx) error {
 }
 
 func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
-	userID := c.Query("userId")
-	restaurant, err := r.restaurantInputPort.GetMyRestaurant(userID)
+	userId := c.Query("userId")
+	restaurant, err := r.restaurantInputPort.GetMyRestaurant(userId)
 	if err != nil {
 		// TODO: handle error
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -75,8 +75,8 @@ func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
 }
 
 func (r *RestaurantInputAdapter) GetRestaurantByID(c *fiber.Ctx) error {
-	restaurantID := c.Query("restaurantId")
-	restaurant, err := r.restaurantInputPort.GetRestaurantByID(restaurantID)
+	restaurantId := c.Query("restaurantId")
+	restaurant, err := r.restaurantInputPort.GetRestaurantByID(restaurantId)
 	if err != nil {
 		// TODO: handle error
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -95,4 +95,52 @@ func (r *RestaurantInputAdapter) GetAllRestaurants(c *fiber.Ctx) error {
 		})
 	}
 	return c.Status(fiber.StatusOK).JSON(restaurants)
+}
+
+func (r *RestaurantInputAdapter) OwnerUpdateRestaurantStatus(c *fiber.Ctx) error {
+	var rs domain.RestaurantStatus
+	restaurantId := c.Params("restaurantId")
+	var updateRestaurantStatusRequest domain.UpdateRestaurantStatusRequest
+
+	if err := c.BodyParser(&updateRestaurantStatusRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing JSON",
+		})
+	}
+	restaurant, err := r.restaurantInputPort.OwnerUpdateRestaurantStatus(restaurantId, rs.ToRestaurantStatus(updateRestaurantStatusRequest.Status))
+	if err != nil {
+		// TODO: handle error
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(restaurant)
+}
+
+func (r *RestaurantInputAdapter) AdminUpdateRestaurantStatus(c *fiber.Ctx) error {
+	var rs domain.RestaurantStatus
+	restaurantId := c.Params("restaurantId")
+	var updateRestaurantStatusRequest domain.UpdateRestaurantStatusRequest
+
+	if err := c.BodyParser(&updateRestaurantStatusRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing JSON",
+		})
+	}
+
+	adminUpdatedStatus := rs.ToRestaurantStatus(updateRestaurantStatusRequest.Status)
+
+	if adminUpdatedStatus != domain.RestaurantStatusInactive {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Only admin can update restaurant status to Inactive",
+		})
+	}
+	restaurant, err := r.restaurantInputPort.AdminUpdateRestaurantStatus(restaurantId, adminUpdatedStatus)
+	if err != nil {
+		// TODO: handle error
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(restaurant)
 }

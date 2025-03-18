@@ -53,12 +53,14 @@ func (o *OrderInputAdapter) UpdateOrderStatus(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(updatedStatusOrder)
 }
 
-func (o *OrderInputAdapter) GetOrderByRestaurantIDAndStatus(c *fiber.Ctx) error {
+func (o *OrderInputAdapter) GetOrderByRestaurantIDDateAndStatus(c *fiber.Ctx) error {
 	var os domain.OrderStatus
 	var restaurantId = c.Query("restaurantId")
 	var orderStatus = c.Query("orderStatus")
+	var startDate = c.Query("startDate")
+	var endDate = c.Query("endDate")
 
-	orders, err := o.orderInputPort.GetOrderByRestaurantIDAndStatus(restaurantId, os.ToOrderStatus(orderStatus))
+	orders, err := o.orderInputPort.GetOrderByRestaurantIDDateAndStatus(restaurantId, startDate, endDate, os.ToOrderStatus(orderStatus))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})
 	}
@@ -120,12 +122,14 @@ func (o *OrderInputAdapter) GetOrderByUserID(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(orders)
 }
 
-func (o *OrderInputAdapter) GetOrderByUserIDAndStatus(c *fiber.Ctx) error {
+func (o *OrderInputAdapter) GetOrderByUserIdDateAndStatus(c *fiber.Ctx) error {
 	var userId = c.Query("userId")
 	var os domain.OrderStatus
 	var orderStatus = c.Query("orderStatus")
+	var startDate = c.Query("startDate")
+	var endDate = c.Query("endDate")
 
-	orders, err := o.orderInputPort.GetOrderByUserIDAndStatus(userId, os.ToOrderStatus(orderStatus))
+	orders, err := o.orderInputPort.GetOrderByUserIdDateAndStatus(userId, startDate, endDate, os.ToOrderStatus(orderStatus))
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})
@@ -134,16 +138,3 @@ func (o *OrderInputAdapter) GetOrderByUserIDAndStatus(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(orders)
 }
 
-func (o *OrderInputAdapter) GetOrderByDate(c *fiber.Ctx) error {
-	var startDate, endDate string
-	var restaurantId = c.Params("restaurantId")
-	startDate = c.Query("startDate")
-	endDate = c.Query("endDate")
-
-	orders, err := o.orderInputPort.GetOrderByDate(restaurantId, startDate, endDate)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(orders)
-}

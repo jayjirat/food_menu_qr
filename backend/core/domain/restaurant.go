@@ -11,13 +11,26 @@ import (
 type RestaurantStatus string
 
 const (
-	RestaurantStatusOpene    RestaurantStatus = "Open"
+	RestaurantStatusOpen     RestaurantStatus = "Open"
 	RestaurantStatusInactive RestaurantStatus = "Inactive"
 	RestaurantStatusClose    RestaurantStatus = "Close"
 )
 
 type UpdateRestaurantStatusRequest struct {
 	Status string `json:"status"`
+}
+
+func (rs *RestaurantStatus) ToRestaurantStatus(restaurantStatus string) RestaurantStatus {
+	switch restaurantStatus {
+	case string(RestaurantStatusOpen):
+		return RestaurantStatusOpen
+	case string(RestaurantStatusInactive):
+		return RestaurantStatusInactive
+	case string(RestaurantStatusClose):
+		return RestaurantStatusClose
+	default:
+		return RestaurantStatusOpen
+	}
 }
 
 type FoodCategory string
@@ -50,11 +63,11 @@ type UpdateOrderStatusRequest struct {
 func (os *OrderStatus) ToOrderStatus(orderStatus string) OrderStatus {
 	switch orderStatus {
 	case string(OrderStatusActive):
-		return OrderStatusConfirmed
-	case string(OrderStatusConfirmed):
-		return OrderStatusCanceled
-	case string(OrderStatusCanceled):
 		return OrderStatusActive
+	case string(OrderStatusConfirmed):
+		return OrderStatusConfirmed
+	case string(OrderStatusCanceled):
+		return OrderStatusCanceled
 	default:
 		return OrderStatusActive
 	}

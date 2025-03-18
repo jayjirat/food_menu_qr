@@ -3,24 +3,23 @@ package inputPort
 import "backend-food-menu-qr/core/domain"
 
 type OrderInputPort interface {
-
-	// Owner
+	UserOrderInputPort
+	OwnerOrderInputPort
 	GetOrderByID(orderId string) (*domain.Order, error)
-	GetOrdersByRestaurantID(restaurantID string) ([]*domain.Order, error)
-	UpdateOrderStatus(orderID string, status domain.OrderStatus) (*domain.Order, error)
+}
 
-	GetOrderByRestaurantIDAndStatus(restaurantID string, status domain.OrderStatus) ([]*domain.Order, error)
-
-	// user
-	CreateOrder(order *domain.Order) (*domain.Order, error)
+type UserOrderInputPort interface {
+	CreateOrder(order *domain.Order) (*domain.Order, error) //-//
 	UpdateOrder(orderID string, order *domain.Order) (*domain.Order, error)
 	DeleteOrder(orderID string) error
-	
+
 	GetOrderByUserID(userID string) ([]*domain.Order, error)
-	GetOrderByUserIDAndStatus(userID string, status domain.OrderStatus) ([]*domain.Order, error)
+	GetOrderByUserIdDateAndStatus(userID string, startDate, endDate string, status domain.OrderStatus) ([]*domain.Order, error)
+}
 
-	// all
-	GetOrderByDate(restaurantID string, startDate, endDate string) ([]*domain.Order, error)
+type OwnerOrderInputPort interface {
+	UpdateOrderStatus(orderID string, status domain.OrderStatus) (*domain.Order, error) //-//
 
-	// service -> CalculateTotalPrice(order *domain.Order) (float64, error)
+	GetOrdersByRestaurantID(restaurantID string) ([]*domain.Order, error)                                                                   //-//
+	GetOrderByRestaurantIDDateAndStatus(restaurantID string, startDate, endDate string, status domain.OrderStatus) ([]*domain.Order, error) //-//
 }
