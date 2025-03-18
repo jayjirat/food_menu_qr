@@ -83,11 +83,13 @@ const (
 
 type Restaurant struct {
 	ID      string           `gorm:"type:uuid;primaryKey" json:"id"`
+	OwnerID string           `gorm:"type:uuid;index" json:"ownerId"`
+	Owner   User             `gorm:"foreignKey:OwnerID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"owner"`
 	Name    string           `json:"name"`
 	LogoUrl string           `json:"logoUrl"`
-	Foods   []Food           `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"foods"`
-	Orders  []Order          `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"orders"`
-	Tables  []Table          `gorm:"foreignKey:RestaurantID;constraint:OnDelete:CASCADE;" json:"tables"`
+	Foods   []Food           `json:"foods"`
+	Orders  []Order          `json:"orders"`
+	Tables  []Table          `json:"tables"`
 	Status  RestaurantStatus `json:"status"`
 }
 
@@ -98,7 +100,8 @@ func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Food struct {
 	ID           string       `gorm:"type:uuid;primaryKey" json:"id"`
-	RestaurantID string       `gorm:"type:uuid;not null;index" json:"restaurantId"`
+	RestaurantID string       `gorm:"type:uuid;index" json:"restaurantId"`
+	Restaurant   Restaurant   `gorm:"foreignKey:RestaurantID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"restaurant"`
 	Name         string       `json:"name"`
 	Description  string       `json:"description"`
 	Price        float64      `json:"price"`
@@ -113,11 +116,13 @@ func (f *Food) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Order struct {
 	ID           string      `gorm:"type:uuid;primaryKey" json:"id"`
-	RestaurantID string      `gorm:"type:uuid;not null" json:"restaurantId"`
+	RestaurantID string      `gorm:"type:uuid;index" json:"restaurantId"`
+	Restaurant   Restaurant  `gorm:"foreignKey:RestaurantID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"restaurant"`
 	TableID      string      `gorm:"type:uuid;index" json:"tableId"`
 	Table        Table       `gorm:"foreignKey:TableID;references:ID" json:"table"`
-	UserID       string      `gorm:"type:uuid;not null;index" json:"userId"`
-	OrderItems   []OrderItem `gorm:"foreignKey:OrderID;constraint:OnDelete:CASCADE;" json:"orderItems"`
+	UserID       string      `gorm:"type:uuid;index" json:"userId"`
+	User         User        `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"user"`
+	OrderItems   []OrderItem `json:"orderItems"`
 	TotalPrice   float64     `json:"totalPrice"`
 	Status       OrderStatus `json:"status"`
 	OrderTime    time.Time   `json:"orderTime"`
@@ -131,7 +136,8 @@ func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
 
 type OrderItem struct {
 	ID            string  `gorm:"type:uuid;primaryKey" json:"id"`
-	OrderID       string  `gorm:"type:uuid;not null" json:"orderId"`
+	OrderID       string  `gorm:"type:uuid;index" json:"orderId"`
+	Order         Order   `gorm:"foreignKey:OrderID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"order"`
 	FoodID        string  `gorm:"type:uuid;index" json:"foodId"`
 	Food          Food    `gorm:"foreignKey:FoodID;references:ID" json:"food"`
 	Quantity      int     `json:"quantity"`
@@ -145,8 +151,9 @@ func (oi *OrderItem) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Table struct {
 	ID           string      `gorm:"type:uuid;primaryKey" json:"id"`
-	RestaurantID string      `gorm:"type:uuid;not null;index" json:"restaurantId"`
-	Number       int         `json:"number"`
+	RestaurantID string      `gorm:"type:uuid;index" json:"restaurantId"`
+	Restaurant   Restaurant  `gorm:"foreignKey:RestaurantID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"restaurant"`
+	Number       int         `gorm:"uniqueIndex:idx_restaurant_table" json:"number"`
 	Status       TableStatus `json:"status"`
 }
 
