@@ -10,8 +10,8 @@ type FoodUseCase struct {
 	restaurantOutputPort outputPort.RestaurantOutputPort
 }
 
-func NewFoodUseCase(foodOutputPort outputPort.FoodOutputPort) *FoodUseCase {
-	return &FoodUseCase{foodOutputPort: foodOutputPort}
+func NewFoodUseCase(foodOutputPort outputPort.FoodOutputPort, restaurantOutputPort outputPort.RestaurantOutputPort) *FoodUseCase {
+	return &FoodUseCase{foodOutputPort: foodOutputPort, restaurantOutputPort: restaurantOutputPort}
 }
 
 func (f *FoodUseCase) CreateFood(restaurantId string, food *domain.Food) (*domain.Food, error) {

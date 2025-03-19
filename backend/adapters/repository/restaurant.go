@@ -30,7 +30,6 @@ func (r *RestaurantOutputAdapter) SaveRestaurant(restaurant *domain.Restaurant) 
 	return restaurant, nil
 }
 
-
 func (r *RestaurantOutputAdapter) DeleteRestaurant(restaurantId string) error {
 	var restaurant domain.Restaurant
 	if err := r.db.Where("id =?", restaurantId).Delete(&restaurant).Error; err != nil {
@@ -42,7 +41,7 @@ func (r *RestaurantOutputAdapter) DeleteRestaurant(restaurantId string) error {
 
 func (r *RestaurantOutputAdapter) GetMyRestaurant(userId string) ([]*domain.Restaurant, error) {
 	var restaurants []*domain.Restaurant
-	if err := r.db.Where("ownerId =?", userId).Find(&restaurants).Error; err != nil {
+	if err := r.db.Where("owner_id =?", userId).Find(&restaurants).Error; err != nil {
 		return nil, err
 	}
 

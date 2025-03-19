@@ -86,17 +86,17 @@ const (
 )
 
 type Restaurant struct {
-	ID      string           `gorm:"type:uuid;primaryKey" json:"id"`
-	OwnerID string           `gorm:"type:uuid;index" json:"ownerId"`
-	Owner   User             `gorm:"foreignKey:OwnerID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"owner"`
-	Name    string           `json:"name"`
-	LogoUrl string           `json:"logoUrl"`
-	Foods   []Food           `json:"foods"`
-	Orders  []Order          `json:"orders"`
-	Tables  []Table          `json:"tables"`
-	Status  RestaurantStatus `json:"status"`
-	CreatedAt    time.Time   `json:"createdAt"`
-	UpdatedAt    time.Time   `json:"updatedAt"`
+	ID        string           `gorm:"type:uuid;primaryKey" json:"id"`
+	OwnerID   string           `gorm:"type:uuid;index" json:"ownerId"`
+	Owner     User             `gorm:"foreignKey:OwnerID;references:ID;constraint:OnDelete:CASCADE;OnUpdate:CASCADE;" json:"owner"`
+	Name      string           `json:"name"`
+	LogoUrl   string           `json:"logoUrl"`
+	Foods     []Food           `json:"foods"`
+	Orders    []Order          `json:"orders"`
+	Tables    []Table          `json:"tables"`
+	Status    RestaurantStatus `json:"status"`
+	CreatedAt time.Time        `json:"createdAt"`
+	UpdatedAt time.Time        `json:"updatedAt"`
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
@@ -113,8 +113,8 @@ type Food struct {
 	Price        float64      `json:"price"`
 	ImageUrl     string       `json:"imageUrl"`
 	Category     FoodCategory `json:"category"`
-	CreatedAt    time.Time   `json:"createdAt"`
-	UpdatedAt    time.Time   `json:"updatedAt"`
+	CreatedAt    time.Time    `json:"createdAt"`
+	UpdatedAt    time.Time    `json:"updatedAt"`
 }
 
 func (f *Food) BeforeCreate(tx *gorm.DB) (err error) {

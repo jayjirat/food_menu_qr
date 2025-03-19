@@ -11,8 +11,8 @@ type OrderUseCase struct {
 	userOutputPort       outputPort.UserOutputPort
 }
 
-func NewOrderUseCase(orderOutputPort outputPort.OrderOutputPort) *OrderUseCase {
-	return &OrderUseCase{orderOutputPort: orderOutputPort}
+func NewOrderUseCase(orderOutputPort outputPort.OrderOutputPort, restaurantOutputPort outputPort.RestaurantOutputPort, userOutputPort outputPort.UserOutputPort) *OrderUseCase {
+	return &OrderUseCase{orderOutputPort: orderOutputPort, restaurantOutputPort: restaurantOutputPort, userOutputPort: userOutputPort}
 }
 
 func (o *OrderUseCase) GetOrderByOrderId(restaurantId string, orderId string) (*domain.Order, error) {

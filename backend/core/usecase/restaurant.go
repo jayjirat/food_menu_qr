@@ -11,8 +11,8 @@ type RestaurantUseCase struct {
 	userOutputPort       outputPort.UserOutputPort
 }
 
-func NewRestaurantUseCase(restaurantOutputPort outputPort.RestaurantOutputPort) *RestaurantUseCase {
-	return &RestaurantUseCase{restaurantOutputPort: restaurantOutputPort}
+func NewRestaurantUseCase(restaurantOutputPort outputPort.RestaurantOutputPort, userOutputPort outputPort.UserOutputPort) *RestaurantUseCase {
+	return &RestaurantUseCase{restaurantOutputPort: restaurantOutputPort, userOutputPort: userOutputPort}
 }
 
 func (r *RestaurantUseCase) CreateRestaurant(restaurant *domain.Restaurant) (*domain.Restaurant, error) {

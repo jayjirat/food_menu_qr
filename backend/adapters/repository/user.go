@@ -49,7 +49,7 @@ func (u *UserOutputAdapter) GetUserByUserId(userId string) (*domain.User, error)
 func (u *UserOutputAdapter) GetAllUsers() ([]*domain.User, error) {
 	var users []*domain.User
 
-	if err := u.db.Where("role = ?", "user").Error; err != nil {
+	if err := u.db.Where("role = ?", "user").Find(&users).Error; err != nil {
 		return nil, err
 	}
 
@@ -59,7 +59,7 @@ func (u *UserOutputAdapter) GetAllUsers() ([]*domain.User, error) {
 func (u *UserOutputAdapter) GetAllOwners() ([]*domain.User, error) {
 	var users []*domain.User
 
-	if err := u.db.Where("role = ?", "owner").Error; err != nil {
+	if err := u.db.Where("role = ?", "owner").Find(&users).Error; err != nil {
 		return nil, err
 	}
 

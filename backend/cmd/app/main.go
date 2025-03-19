@@ -43,9 +43,9 @@ func main() {
 
 	userUsecase := usecase.NewUserUseCase(userRepo)
 	authenticationUsecase := usecase.NewAuthenticationUseCase(userRepo)
-	restaurantUsecase := usecase.NewRestaurantUseCase(restaurantRepo)
-	foodUsecase := usecase.NewFoodUseCase(foodRepo)
-	orderUsecase := usecase.NewOrderUseCase(orderRepo)
+	restaurantUsecase := usecase.NewRestaurantUseCase(restaurantRepo, userRepo)
+	foodUsecase := usecase.NewFoodUseCase(foodRepo, restaurantRepo)
+	orderUsecase := usecase.NewOrderUseCase(orderRepo, restaurantRepo, userRepo)
 
 	userInputAdapter := httpAdapter.NewUserInputAdapter(userUsecase)
 	authenticationInputAdapter := httpAdapter.NewAuthenticationAdapter(authenticationUsecase)
