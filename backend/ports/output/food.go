@@ -9,6 +9,6 @@ type FoodOutputPort interface {
 type OwnerFoodOutputPort interface {
 	SaveFood(food *domain.Food) (*domain.Food, error)
 	DeleteFood(food *domain.Food) error
-	GetFoodByID(id string) (*domain.Food, error)
-	GetAllFoodsByRestaurantID(restaurantId string) ([]*domain.Food, error)
+	GetFoodByRestaurantIdAndFoodId(restaurantId string, foodId string) (*domain.Food, error)
+	GetAllFoodsByRestaurantId(restaurantId string) ([]*domain.Food, error)
 }
