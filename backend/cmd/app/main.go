@@ -39,16 +39,19 @@ func main() {
 	userRepo := repositoryAdapter.NewUserOutputAdapter(db)
 	restaurantRepo := repositoryAdapter.NewRestaurantOutputPort(db)
 	foodRepo := repositoryAdapter.NewFoodOutputAdapter(db)
+	orderRepo := repositoryAdapter.NewOrderOutputAdapter(db)
 
 	userUsecase := usecase.NewUserUseCase(userRepo)
 	authenticationUsecase := usecase.NewAuthenticationUseCase(userRepo)
 	restaurantUsecase := usecase.NewRestaurantUseCase(restaurantRepo)
 	foodUsecase := usecase.NewFoodUseCase(foodRepo)
+	orderUsecase := usecase.NewOrderUseCase(orderRepo)
 
 	userInputAdapter := httpAdapter.NewUserInputAdapter(userUsecase)
 	authenticationInputAdapter := httpAdapter.NewAuthenticationAdapter(authenticationUsecase)
 	restaurantInputAdapter := httpAdapter.NewRestaurantInputAdapter(restaurantUsecase)
 	foodInputAdapter := httpAdapter.NewFoodInputAdapter(foodUsecase)
+	orderInputAdapter := httpAdapter.NewOrderInputAdapter(orderUsecase)
 
 	app := fiber.New()
 
@@ -80,6 +83,14 @@ func main() {
 	app.Delete("/api/owner/restaurant/:restaurantId/food/:foodId", foodInputAdapter.DeleteFood)
 	app.Get("/api/restaurant/:restaurantId/food/:foodId", foodInputAdapter.GetFoodByRestaurantIdAndFoodId)
 	app.Get("/api/restaurant/:restaurantId/foods", foodInputAdapter.GetAllFoodsByRestaurantID)
+
+	app.Get("/api/restaurant/:restaurantId/order/:orderId", orderInputAdapter.GetOrderByOrderId)
+	app.Post("/api/user/restaurant/:restaurantId/order", orderInputAdapter.CreateOrder)
+	app.Put("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrder)
+	app.Delete("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.DeleteOrder)
+	app.Get("/api/user/me/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
+	app.Patch("/api/owner/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrderStatus)
+	app.Get("/api/owner/restaurant/:restaurantId/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
 
 	app.Listen(":" + config.AppConfig.APIPort)
 }

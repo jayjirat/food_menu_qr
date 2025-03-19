@@ -5,21 +5,17 @@ import "backend-food-menu-qr/core/domain"
 type OrderInputPort interface {
 	UserOrderInputPort
 	OwnerOrderInputPort
-	GetOrderByID(orderId string) (*domain.Order, error)
+	GetOrderByOrderId(restaurantId string,orderId string) (*domain.Order, error)
 }
 
 type UserOrderInputPort interface {
-	CreateOrder(order *domain.Order) (*domain.Order, error) //-//
-	UpdateOrder(orderID string, order *domain.Order) (*domain.Order, error)
-	DeleteOrder(orderID string) error
-
-	GetOrderByUserID(userID string) ([]*domain.Order, error)
+	CreateOrder(restaurantId string,order *domain.Order) (*domain.Order, error)
+	UpdateOrder(restaurantId string,orderID string, order *domain.Order) (*domain.Order, error)
+	DeleteOrder(restaurantId string,orderID string) error
 	GetOrderByUserIdDateAndStatus(userID string, startDate, endDate string, status domain.OrderStatus) ([]*domain.Order, error)
 }
 
 type OwnerOrderInputPort interface {
-	UpdateOrderStatus(orderID string, status domain.OrderStatus) (*domain.Order, error) //-//
-
-	GetOrdersByRestaurantID(restaurantID string) ([]*domain.Order, error)                                                                   //-//
-	GetOrderByRestaurantIDDateAndStatus(restaurantID string, startDate, endDate string, status domain.OrderStatus) ([]*domain.Order, error) //-//
+	UpdateOrderStatus(restaurantId string,orderID string, status domain.OrderStatus) (*domain.Order, error)
+	GetOrderByRestaurantIdDateAndStatus(restaurantID string, startDate, endDate string, status domain.OrderStatus) ([]*domain.Order, error)
 }

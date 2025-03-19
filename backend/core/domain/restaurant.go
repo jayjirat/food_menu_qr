@@ -8,6 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
+func GetCurrentTime() time.Time {
+	return time.Now().UTC()
+}
+
 type RestaurantStatus string
 
 const (

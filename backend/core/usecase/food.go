@@ -46,7 +46,7 @@ func (f *FoodUseCase) UpdateFood(restaurantId string, food *domain.Food) (*domai
 	}
 	updatedFood.Category = food.Category
 
-	return f.foodOutputPort.SaveFood(food)
+	return f.foodOutputPort.SaveFood(updatedFood)
 }
 
 func (f *FoodUseCase) DeleteFood(restaurantId string, foodId string) error {
