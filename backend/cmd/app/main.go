@@ -60,46 +60,54 @@ func main() {
 
 	app.Use(middleware.AuthenticateToken)
 
-	app.Get("/api/user/me", userInputAdapter.GetUserByUserId)
-	app.Put("/api/user/me", userInputAdapter.UpdateUser)
-	app.Delete("/api/user/me", userInputAdapter.DeleteUser)
-
 	app.Get("/api/restaurant/:restaurantId", restaurantInputAdapter.GetRestaurantByID)
 
 	app.Get("/api/restaurant/:restaurantId/food/:foodId", foodInputAdapter.GetFoodByRestaurantIdAndFoodId)
 	app.Get("/api/restaurant/:restaurantId/foods", foodInputAdapter.GetAllFoodsByRestaurantID)
 
 	app.Get("/api/restaurant/:restaurantId/order/:orderId", orderInputAdapter.GetOrderByOrderId)
-	app.Post("/api/user/restaurant/:restaurantId/order", orderInputAdapter.CreateOrder)
-	app.Put("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrder)
-	app.Delete("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.DeleteOrder)
-	app.Get("/api/user/me/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
 
-	app.Use(middleware.RequireOwnerRole)
+	userRoutes := app.Group("/api/user")
+	userRoutes.Get("/me", userInputAdapter.GetUserByUserId)
+	userRoutes.Put("/me", userInputAdapter.UpdateUser)
+	userRoutes.Delete("/me", userInputAdapter.DeleteUser)
 
-	app.Get("/api/owner/restaurant", restaurantInputAdapter.GetMyRestaurant)
-	app.Post("/api/owner/restaurant", restaurantInputAdapter.CreateRestaurant)
-	app.Put("/api/owner/restaurant/:restaurantId/details", restaurantInputAdapter.UpdateRestaurant)
-	app.Put("/api/owner/restaurant/:restaurantId/status", restaurantInputAdapter.OwnerUpdateRestaurantStatus)
-	app.Delete("/api/owner/restaurant/:restaurantId", restaurantInputAdapter.DeleteRestaurant)
+	userRoutes.Get("/me/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
+	userRoutes.Post("/restaurant/:restaurantId/order", orderInputAdapter.CreateOrder)
+	userRoutes.Put("/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrder)
+	userRoutes.Delete("/restaurant/:restaurantId/order/:orderId", orderInputAdapter.DeleteOrder)
 
-	app.Post("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.CreateFood)
-	app.Put("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.UpdateFood)
-	app.Delete("/api/owner/restaurant/:restaurantId/food/:foodId", foodInputAdapter.DeleteFood)
+	ownerRoutes := app.Group("/api/owner")
+	ownerRoutes.Use(middleware.RequireOwnerRole)
+	ownerRoutes.Get("/restaurant", restaurantInputAdapter.GetMyRestaurant)
+	ownerRoutes.Post("/restaurant", restaurantInputAdapter.CreateRestaurant)
 
-	app.Patch("/api/owner/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrderStatus)
-	app.Get("/api/owner/restaurant/:restaurantId/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
+	ownerActionRoutes := app.Group("/api/owner/actions")
+	ownerActionRoutes.Use(middleware.RequireOwnerOfRestaurant)
 
-	app.Use(middleware.RequireAdminRole)
+	ownerActionRoutes.Put("/restaurant/:restaurantId/details", restaurantInputAdapter.UpdateRestaurant)
+	ownerActionRoutes.Patch("/restaurant/:restaurantId/status", restaurantInputAdapter.OwnerUpdateRestaurantStatus)
+	ownerActionRoutes.Delete("/restaurant/:restaurantId", restaurantInputAdapter.DeleteRestaurant)
 
-	app.Get("/api/admin/users", userInputAdapter.GetAllUsers)
-	app.Get("/api/admin/owners", userInputAdapter.GetAllOwners)
-	app.Post("/api/admin/user", userInputAdapter.CreateUser)
-	app.Get("/api/admin/user/:userId", userInputAdapter.GetUserByUserId)
-	app.Put("/api/admin/user/:userId", userInputAdapter.UpdateUser)
-	app.Delete("/api/admin/user/:userId", userInputAdapter.DeleteUser)
+	ownerActionRoutes.Post("/restaurant/:restaurantId/food", foodInputAdapter.CreateFood)
+	ownerActionRoutes.Put("/restaurant/:restaurantId/food", foodInputAdapter.UpdateFood)
+	ownerActionRoutes.Delete("/restaurant/:restaurantId/food/:foodId", foodInputAdapter.DeleteFood)
 
-	app.Get("/api/admin/restaurants", restaurantInputAdapter.GetAllRestaurants)
-	app.Put("/api/admin/restaurant/:restaurantId/status", restaurantInputAdapter.AdminUpdateRestaurantStatus)
+	ownerActionRoutes.Patch("/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrderStatus)
+	ownerActionRoutes.Get("/restaurant/:restaurantId/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
+
+	adminRoutes := app.Group("/api/admin")
+	adminRoutes.Use(middleware.RequireAdminRole)
+
+	adminRoutes.Get("/users", userInputAdapter.GetAllUsers)
+	adminRoutes.Get("/owners", userInputAdapter.GetAllOwners)
+	adminRoutes.Post("/user", userInputAdapter.CreateUser)
+	adminRoutes.Get("/user/:userId", userInputAdapter.GetUserByUserId)
+	adminRoutes.Put("/user/:userId", userInputAdapter.UpdateUser)
+	adminRoutes.Delete("/user/:userId", userInputAdapter.DeleteUser)
+
+	adminRoutes.Get("/restaurants", restaurantInputAdapter.GetAllRestaurants)
+	adminRoutes.Patch("/restaurant/:restaurantId/status", restaurantInputAdapter.AdminUpdateRestaurantStatus)
+
 	app.Listen(":" + config.AppConfig.APIPort)
 }

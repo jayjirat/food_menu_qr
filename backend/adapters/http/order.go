@@ -101,7 +101,7 @@ func (o *OrderInputAdapter) DeleteOrder(c *fiber.Ctx) error {
 }
 
 func (o *OrderInputAdapter) GetOrderByUserIdDateAndStatus(c *fiber.Ctx) error {
-	var userId = c.Query("userId")
+	var userId = c.Locals("userId").(string)
 	var os domain.OrderStatus
 	var orderStatus = c.Query("orderStatus")
 	var startDate = c.Query("startDate")

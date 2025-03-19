@@ -88,7 +88,7 @@ func (r *RestaurantInputAdapter) DeleteRestaurant(c *fiber.Ctx) error {
 }
 
 func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
-	userId := c.Query("userId")
+	userId := c.Locals("userId").(string)
 	if userId == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "User ID is required",

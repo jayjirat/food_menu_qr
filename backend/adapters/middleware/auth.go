@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"backend-food-menu-qr/config"
+	outputPort "backend-food-menu-qr/ports/output"
 	"fmt"
 	"strings"
 
@@ -67,17 +68,19 @@ func RequireAdminRole(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func RequireSameUserOrAdmin(c *fiber.Ctx) error {
-    userId := c.Locals("userId").(string)
-    role := c.Locals("role").(string)
-    paramUserId := c.Params("userId")
+func RequireOwnerOfRestaurant(repo outputPort.RestaurantOutputPort, c *fiber.Ctx) error {
 
-    if role != "admin" && userId != paramUserId {
-        return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
-            "message": "Access Denied: You can only access your own data",
-        })
-    }
+	userId := c.Locals("userId").(string)
+	restaurantId := c.Params("restaurantId")
 
-    return c.Next()
+	restaurant, err := repo.GetRestaurantByID(restaurantId)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "Restaurant not found"})
+	}
+
+	if restaurant.OwnerID != userId {
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"message": "Access Denied: Not the owner"})
+	}
+	return c.Next()
+
 }
-
