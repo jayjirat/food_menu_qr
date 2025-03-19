@@ -22,6 +22,13 @@ func (r *RestaurantInputAdapter) CreateRestaurant(c *fiber.Ctx) error {
 			"message": "Error parsing JSON",
 		})
 	}
+
+	if restaurant.OwnerID == "" || restaurant.Name == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid restaurant data",
+		})
+	}
+
 	newRestaurant, err := r.restaurantInputPort.CreateRestaurant(&restaurant)
 	if err != nil {
 		// TODO: handle error
@@ -51,6 +58,11 @@ func (r *RestaurantInputAdapter) UpdateRestaurant(c *fiber.Ctx) error {
 
 func (r *RestaurantInputAdapter) DeleteRestaurant(c *fiber.Ctx) error {
 	restaurantId := c.Params("restaurantId")
+	if restaurantId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID is required",
+		})
+	}
 	if err := r.restaurantInputPort.DeleteRestaurant(restaurantId); err != nil {
 		// TODO: handle error
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -64,6 +76,11 @@ func (r *RestaurantInputAdapter) DeleteRestaurant(c *fiber.Ctx) error {
 
 func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
 	userId := c.Query("userId")
+	if userId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "User ID is required",
+		})
+	}
 	restaurant, err := r.restaurantInputPort.GetMyRestaurant(userId)
 	if err != nil {
 		// TODO: handle error
@@ -76,6 +93,14 @@ func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
 
 func (r *RestaurantInputAdapter) GetRestaurantByID(c *fiber.Ctx) error {
 	restaurantId := c.Query("restaurantId")
+
+	// handle query parameters error
+	if restaurantId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID is required",
+		})
+	}
+
 	restaurant, err := r.restaurantInputPort.GetRestaurantByID(restaurantId)
 	if err != nil {
 		// TODO: handle error
@@ -100,6 +125,11 @@ func (r *RestaurantInputAdapter) GetAllRestaurants(c *fiber.Ctx) error {
 func (r *RestaurantInputAdapter) OwnerUpdateRestaurantStatus(c *fiber.Ctx) error {
 	var rs domain.RestaurantStatus
 	restaurantId := c.Params("restaurantId")
+	if restaurantId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID is required",
+		})
+	}
 	var updateRestaurantStatusRequest domain.UpdateRestaurantStatusRequest
 
 	if err := c.BodyParser(&updateRestaurantStatusRequest); err != nil {
@@ -120,6 +150,11 @@ func (r *RestaurantInputAdapter) OwnerUpdateRestaurantStatus(c *fiber.Ctx) error
 func (r *RestaurantInputAdapter) AdminUpdateRestaurantStatus(c *fiber.Ctx) error {
 	var rs domain.RestaurantStatus
 	restaurantId := c.Params("restaurantId")
+	if restaurantId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID is required",
+		})
+	}
 	var updateRestaurantStatusRequest domain.UpdateRestaurantStatusRequest
 
 	if err := c.BodyParser(&updateRestaurantStatusRequest); err != nil {

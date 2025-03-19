@@ -15,12 +15,21 @@ func NewRestaurantOutputPort(db *gorm.DB) *RestaurantOutputAdapter {
 }
 
 func (r *RestaurantOutputAdapter) SaveRestaurant(restaurant *domain.Restaurant) (*domain.Restaurant, error) {
+	var existing domain.Restaurant
+	if err := r.db.Where("id = ?", restaurant.ID).First(&existing).Error; err == nil {
+		if err := r.db.Model(&existing).Updates(restaurant).Error; err != nil {
+			return nil, err
+		}
+		return &existing, nil
+	}
+
 	if err := r.db.Create(restaurant).Error; err != nil {
 		return nil, err
 	}
 
 	return restaurant, nil
 }
+
 
 func (r *RestaurantOutputAdapter) DeleteRestaurant(restaurantId string) error {
 	var restaurant domain.Restaurant
