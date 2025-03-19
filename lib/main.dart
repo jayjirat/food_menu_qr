@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_menu_qr/screens/homepage.dart';
 import 'package:food_menu_qr/screens/login.dart';
+import 'package:food_menu_qr/screens/owner/owner_add_restaurant.dart';
 import 'package:food_menu_qr/screens/owner/owner_main.dart';
 import 'package:food_menu_qr/screens/register.dart';
 import 'package:food_menu_qr/screens/user/subscreens/help_center.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
 
         // owner screens
         '/owner-home': (context) => const OwnerMain(),
+        '/owner-add-restaurant': (context) => const OwnerAddRestaurant(),
       },
     );
   }
