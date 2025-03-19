@@ -83,7 +83,7 @@ func main() {
 	ownerRoutes.Post("/restaurant", restaurantInputAdapter.CreateRestaurant)
 
 	ownerActionRoutes := app.Group("/api/owner/actions")
-	ownerActionRoutes.Use(middleware.RequireOwnerOfRestaurant)
+	ownerActionRoutes.Use(middleware.RequireOwnerOfRestaurant(restaurantRepo))
 
 	ownerActionRoutes.Put("/restaurant/:restaurantId/details", restaurantInputAdapter.UpdateRestaurant)
 	ownerActionRoutes.Patch("/restaurant/:restaurantId/status", restaurantInputAdapter.OwnerUpdateRestaurantStatus)
@@ -109,5 +109,7 @@ func main() {
 	adminRoutes.Get("/restaurants", restaurantInputAdapter.GetAllRestaurants)
 	adminRoutes.Patch("/restaurant/:restaurantId/status", restaurantInputAdapter.AdminUpdateRestaurantStatus)
 
-	app.Listen(":" + config.AppConfig.APIPort)
+	if err := app.Listen(":" + config.AppConfig.APIPort); err != nil {
+		log.Fatal("Error starting server: ", err)
+	}
 }

@@ -68,19 +68,21 @@ func RequireAdminRole(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func RequireOwnerOfRestaurant(repo outputPort.RestaurantOutputPort, c *fiber.Ctx) error {
+// Middleware factory function
+func RequireOwnerOfRestaurant(repo outputPort.RestaurantOutputPort) fiber.Handler {
 
-	userId := c.Locals("userId").(string)
-	restaurantId := c.Params("restaurantId")
+    return func(c *fiber.Ctx) error {
+        userId := c.Locals("userId").(string)
+        restaurantId := c.Params("restaurantId")
 
-	restaurant, err := repo.GetRestaurantByID(restaurantId)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "Restaurant not found"})
-	}
+        restaurant, err := repo.GetRestaurantByID(restaurantId)
+        if err != nil {
+            return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "Restaurant not found"})
+        }
 
-	if restaurant.OwnerID != userId {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"message": "Access Denied: Not the owner"})
-	}
-	return c.Next()
-
+        if restaurant.OwnerID != userId {
+            return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"message": "Access Denied: Not the owner"})
+        }
+        return c.Next()
+    }
 }
