@@ -16,7 +16,7 @@ func NewRestaurantUseCase(restaurantOutputPort outputPort.RestaurantOutputPort) 
 }
 
 func (r *RestaurantUseCase) CreateRestaurant(restaurant *domain.Restaurant) (*domain.Restaurant, error) {
-	if _, err := r.userOutputPort.GetUserByID(restaurant.OwnerID); err != nil {
+	if _, err := r.userOutputPort.GetUserByUserId(restaurant.OwnerID); err != nil {
 		return nil, errors.New("user not found")
 	}
 
@@ -67,7 +67,7 @@ func (r *RestaurantUseCase) DeleteRestaurant(restaurantId string) error {
 
 func (r *RestaurantUseCase) GetMyRestaurant(userId string) ([]*domain.Restaurant, error) {
 
-	if _, err := r.userOutputPort.GetUserByID(userId); err != nil {
+	if _, err := r.userOutputPort.GetUserByUserId(userId); err != nil {
 		return nil, errors.New("user not found")
 	}
 

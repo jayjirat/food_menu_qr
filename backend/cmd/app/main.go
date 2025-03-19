@@ -57,11 +57,12 @@ func main() {
 
 	app.Use(middleware.AuthenticateToken)
 
-	app.Get("/api/user/:userId", userInputAdapter.GetUserByID)
+	app.Get("/api/user/:userId", userInputAdapter.GetUserByUserId)
 	app.Put("/api/user/:userId", userInputAdapter.UpdateUser)
 	app.Get("/api/admin/users", userInputAdapter.GetAllUsers)
 	app.Get("/api/admin/owners", userInputAdapter.GetAllOwners)
 	app.Post("/api/admin/user", userInputAdapter.CreateUser)
+	app.Delete("/api/user/:userId", userInputAdapter.DeleteUser)
 
 	app.Get("/api/owner/restaurant", restaurantInputAdapter.GetMyRestaurant)
 	app.Post("/api/owner/restaurant", restaurantInputAdapter.CreateRestaurant)

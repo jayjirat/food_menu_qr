@@ -32,17 +32,14 @@ func (u *UserOutputAdapter) SaveUser(user *domain.User) (*domain.User, error) {
 	return user, nil
 }
 
-func (u *UserOutputAdapter) DeleteUser(user *domain.User) error {
-	if err := u.db.Delete(user).Error; err != nil {
-		return err
-	}
-
-	return nil
+func (u *UserOutputAdapter) DeleteUser(userId string) error {
+	var user domain.User
+	return u.db.Where("id = ?", userId).Delete(&user).Error
 }
 
-func (u *UserOutputAdapter) GetUserByID(id string) (*domain.User, error) {
+func (u *UserOutputAdapter) GetUserByUserId(userId string) (*domain.User, error) {
 	var user domain.User
-	if err := u.db.Where("id =?", id).First(&user).Error; err != nil {
+	if err := u.db.Where("id =?", userId).First(&user).Error; err != nil {
 		return nil, err
 	}
 

@@ -60,14 +60,31 @@ func (u *UserInputAdapter) UpdateUser(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(updatedUser)
 }
 
-func (u *UserInputAdapter) GetUserByID(c *fiber.Ctx) error {
+func (u *UserInputAdapter) DeleteUser(c *fiber.Ctx) error {
+	userId := c.Params("userId")
+    if userId == "" {
+        return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+            "message": "User ID is required",
+        })
+    }
+
+    err := u.userInputPort.DeleteUser(userId)
+
+    if err != nil {
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})
+    }
+
+    return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "User deleted successfully"})
+}
+
+func (u *UserInputAdapter) GetUserByUserId(c *fiber.Ctx) error {
 
 	userId := c.Params("userId")
 	if userId == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "User ID is required"})
 	}
 
-	user, err := u.userInputPort.GetUserByID(userId)
+	user, err := u.userInputPort.GetUserByUserId(userId)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})

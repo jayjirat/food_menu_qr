@@ -19,7 +19,7 @@ func (u *UserUseCase) CreateUser(user *domain.User) (*domain.User, error) {
 		return nil, errors.New("invalid data for user")
 	}
 
-	existingUser, err := u.userOutputPort.GetUserByID(user.ID)
+	existingUser, err := u.userOutputPort.GetUserByEmail(user.Email)
 	if err != nil {
 		return nil, errors.New("database internal error")
 	}
@@ -31,7 +31,7 @@ func (u *UserUseCase) CreateUser(user *domain.User) (*domain.User, error) {
 }
 
 func (u *UserUseCase) UpdateUser(user *domain.User) (*domain.User, error) {
-	updatedUser, err := u.userOutputPort.GetUserByID(user.ID)
+	updatedUser, err := u.userOutputPort.GetUserByUserId(user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +60,8 @@ func (u *UserUseCase) UpdateUser(user *domain.User) (*domain.User, error) {
 	return updatedUser, nil
 }
 
-func (u *UserUseCase) GetUserByID(id string) (*domain.User, error) {
-	user, err := u.userOutputPort.GetUserByID(id)
+func (u *UserUseCase) GetUserByUserId(userId string) (*domain.User, error) {
+	user, err := u.userOutputPort.GetUserByUserId(userId)
 
 	if err != nil {
 		return nil, err
@@ -70,6 +70,9 @@ func (u *UserUseCase) GetUserByID(id string) (*domain.User, error) {
 	return user, nil
 }
 
+func (u *UserUseCase) DeleteUser(userId string) error {
+	return u.userOutputPort.DeleteUser(userId)
+}
 func (u *UserUseCase) GetAllUsers() ([]*domain.User, error) {
 	users, err := u.userOutputPort.GetAllUsers()
 	if err != nil {
