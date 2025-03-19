@@ -19,7 +19,8 @@ func (r *RestaurantUseCase) CreateRestaurant(restaurant *domain.Restaurant) (*do
 	if _, err := r.userOutputPort.GetUserByUserId(restaurant.OwnerID); err != nil {
 		return nil, errors.New("user not found")
 	}
-
+	restaurant.CreatedAt = domain.GetCurrentTime()
+	restaurant.UpdatedAt = domain.GetCurrentTime()
 	newRestaurant, err := r.restaurantOutputPort.SaveRestaurant(restaurant)
 	if err != nil {
 		return nil, err
@@ -44,6 +45,8 @@ func (r *RestaurantUseCase) UpdateRestaurant(restaurant *domain.Restaurant) (*do
 	if restaurant.LogoUrl != "" {
 		updatedRestaurant.LogoUrl = restaurant.LogoUrl
 	}
+
+	updatedRestaurant.UpdatedAt = domain.GetCurrentTime()
 
 	updatedRestaurant, err = r.restaurantOutputPort.SaveRestaurant(updatedRestaurant)
 
@@ -98,40 +101,40 @@ func (r *RestaurantUseCase) GetAllRestaurants() ([]*domain.Restaurant, error) {
 
 func (r *RestaurantUseCase) OwnerUpdateRestaurantStatus(restaurantId string, status domain.RestaurantStatus) (*domain.Restaurant, error) {
 	updatedRestaurant, err := r.restaurantOutputPort.GetRestaurantByID(restaurantId)
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    if updatedRestaurant == nil {
-        return nil, errors.New("restaurant not found")
-    }
+	if updatedRestaurant == nil {
+		return nil, errors.New("restaurant not found")
+	}
 
-    updatedRestaurant.Status = status
+	updatedRestaurant.Status = status
+	updatedRestaurant.UpdatedAt = domain.GetCurrentTime()
+	updatedRestaurant, err = r.restaurantOutputPort.SaveRestaurant(updatedRestaurant)
 
-    updatedRestaurant, err = r.restaurantOutputPort.SaveRestaurant(updatedRestaurant)
-
-    if err != nil {
-        return nil, err
-    }
-    return updatedRestaurant, nil
+	if err != nil {
+		return nil, err
+	}
+	return updatedRestaurant, nil
 }
 
 func (r *RestaurantUseCase) AdminUpdateRestaurantStatus(restaurantId string, status domain.RestaurantStatus) (*domain.Restaurant, error) {
 	updatedRestaurant, err := r.restaurantOutputPort.GetRestaurantByID(restaurantId)
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    if updatedRestaurant == nil {
-        return nil, errors.New("restaurant not found")
-    }
+	if updatedRestaurant == nil {
+		return nil, errors.New("restaurant not found")
+	}
 
-    updatedRestaurant.Status = status
+	updatedRestaurant.Status = status
+	updatedRestaurant.UpdatedAt = domain.GetCurrentTime()
+	updatedRestaurant, err = r.restaurantOutputPort.SaveRestaurant(updatedRestaurant)
 
-    updatedRestaurant, err = r.restaurantOutputPort.SaveRestaurant(updatedRestaurant)
-
-    if err != nil {
-        return nil, err
-    }
-    return updatedRestaurant, nil
+	if err != nil {
+		return nil, err
+	}
+	return updatedRestaurant, nil
 }

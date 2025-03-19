@@ -22,7 +22,7 @@ func (o *OrderUseCase) GetOrderByOrderId(restaurantId string, orderId string) (*
 	return o.orderOutputPort.GetOrderByOrderId(restaurantId, orderId)
 }
 
-func (o *OrderUseCase) CreateOrder(restaurantId string,order *domain.Order) (*domain.Order, error) {
+func (o *OrderUseCase) CreateOrder(restaurantId string, order *domain.Order) (*domain.Order, error) {
 	if _, err := o.restaurantOutputPort.GetRestaurantByID(restaurantId); err != nil {
 		return nil, err
 	}
@@ -30,11 +30,12 @@ func (o *OrderUseCase) CreateOrder(restaurantId string,order *domain.Order) (*do
 	if _, err := o.userOutputPort.GetUserByUserId(order.UserID); err != nil {
 		return nil, err
 	}
-
+	order.CreatedAt = domain.GetCurrentTime()
+	order.UpdatedAt = domain.GetCurrentTime()
 	return o.orderOutputPort.SaveOrder(restaurantId, order)
 }
 
-func (o *OrderUseCase) UpdateOrder(restaurantId string,orderID string, order *domain.Order) (*domain.Order, error) {
+func (o *OrderUseCase) UpdateOrder(restaurantId string, orderID string, order *domain.Order) (*domain.Order, error) {
 	if _, err := o.restaurantOutputPort.GetRestaurantByID(restaurantId); err != nil {
 		return nil, err
 	}
@@ -60,12 +61,12 @@ func (o *OrderUseCase) UpdateOrder(restaurantId string,orderID string, order *do
 		updatedOrder.TakeAway = order.TakeAway
 	}
 
-	updatedOrder.UpdatedAt = order.UpdatedAt
+	updatedOrder.UpdatedAt = domain.GetCurrentTime()
 
 	return o.orderOutputPort.SaveOrder(restaurantId, updatedOrder)
 }
 
-func (o *OrderUseCase) DeleteOrder(restaurantId string,orderID string) error {
+func (o *OrderUseCase) DeleteOrder(restaurantId string, orderID string) error {
 	if _, err := o.restaurantOutputPort.GetRestaurantByID(restaurantId); err != nil {
 		return err
 	}
@@ -81,7 +82,7 @@ func (o *OrderUseCase) GetOrderByUserIdDateAndStatus(userID string, startDate, e
 	return o.orderOutputPort.GetOrderByUserIdDateAndStatus(userID, startDate, endDate, status)
 }
 
-func (o *OrderUseCase) UpdateOrderStatus(restaurantId string,orderID string, status domain.OrderStatus) (*domain.Order, error) {
+func (o *OrderUseCase) UpdateOrderStatus(restaurantId string, orderID string, status domain.OrderStatus) (*domain.Order, error) {
 	if _, err := o.restaurantOutputPort.GetRestaurantByID(restaurantId); err != nil {
 		return nil, err
 	}

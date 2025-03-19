@@ -95,6 +95,8 @@ type Restaurant struct {
 	Orders  []Order          `json:"orders"`
 	Tables  []Table          `json:"tables"`
 	Status  RestaurantStatus `json:"status"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	UpdatedAt    time.Time   `json:"updatedAt"`
 }
 
 func (r *Restaurant) BeforeCreate(tx *gorm.DB) (err error) {
@@ -111,6 +113,8 @@ type Food struct {
 	Price        float64      `json:"price"`
 	ImageUrl     string       `json:"imageUrl"`
 	Category     FoodCategory `json:"category"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	UpdatedAt    time.Time   `json:"updatedAt"`
 }
 
 func (f *Food) BeforeCreate(tx *gorm.DB) (err error) {

@@ -18,7 +18,8 @@ func (f *FoodUseCase) CreateFood(restaurantId string, food *domain.Food) (*domai
 	if _, err := f.restaurantOutputPort.GetRestaurantByID(restaurantId); err != nil {
 		return nil, err
 	}
-
+	food.CreatedAt = domain.GetCurrentTime()
+	food.UpdatedAt = domain.GetCurrentTime()
 	return f.foodOutputPort.SaveFood(food)
 }
 
@@ -45,7 +46,7 @@ func (f *FoodUseCase) UpdateFood(restaurantId string, food *domain.Food) (*domai
 		updatedFood.ImageUrl = food.ImageUrl
 	}
 	updatedFood.Category = food.Category
-
+	updatedFood.UpdatedAt = domain.GetCurrentTime()
 	return f.foodOutputPort.SaveFood(updatedFood)
 }
 
