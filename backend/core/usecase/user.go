@@ -77,3 +77,11 @@ func (u *UserUseCase) GetAllUsers() ([]*domain.User, error) {
 	}
 	return users, nil
 }
+
+func (u *UserUseCase) GetAllOwners() ([]*domain.User, error) {
+	users, err := u.userOutputPort.GetAllOwners()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}

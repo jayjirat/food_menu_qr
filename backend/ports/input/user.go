@@ -7,4 +7,5 @@ type UserInputPort interface {
 	UpdateUser(user *domain.User) (*domain.User, error)
 	GetUserByID(id string) (*domain.User, error)
 	GetAllUsers() ([]*domain.User, error)
+	GetAllOwners() ([]*domain.User, error)
 }

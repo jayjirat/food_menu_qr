@@ -16,6 +16,15 @@ func NewUserOutputAdapter(db *gorm.DB) *UserOutputAdapter {
 
 func (u *UserOutputAdapter) SaveUser(user *domain.User) (*domain.User, error) {
 
+	var existingUser domain.User
+
+	if err := u.db.Where("id=?", user.ID).First(&existingUser).Error; err == nil {
+		if err := u.db.Model(&existingUser).Updates(user).Error; err != nil {
+			return nil, err
+		}
+		return &existingUser, nil
+	}
+
 	if err := u.db.Create(user).Error; err != nil {
 		return nil, err
 	}
@@ -43,7 +52,17 @@ func (u *UserOutputAdapter) GetUserByID(id string) (*domain.User, error) {
 func (u *UserOutputAdapter) GetAllUsers() ([]*domain.User, error) {
 	var users []*domain.User
 
-	if err := u.db.Find(&users).Error; err != nil {
+	if err := u.db.Where("role = ?", "user").Error; err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func (u *UserOutputAdapter) GetAllOwners() ([]*domain.User, error) {
+	var users []*domain.User
+
+	if err := u.db.Where("role = ?", "owner").Error; err != nil {
 		return nil, err
 	}
 

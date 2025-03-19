@@ -95,8 +95,8 @@ func (f *FoodInputAdapter) DeleteFood(c *fiber.Ctx) error {
 }
 
 func (f *FoodInputAdapter) GetFoodByRestaurantIdAndFoodId(c *fiber.Ctx) error {
-	var restaurantId = c.Query("restaurantId")
-	var foodId = c.Query("foodId")
+	var restaurantId = c.Params("restaurantId")
+	var foodId = c.Params("foodId")
 	if restaurantId == "" || foodId == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Restaurant ID and food ID are required",
@@ -114,7 +114,7 @@ func (f *FoodInputAdapter) GetFoodByRestaurantIdAndFoodId(c *fiber.Ctx) error {
 }
 
 func (f *FoodInputAdapter) GetAllFoodsByRestaurantID(c *fiber.Ctx) error {
-	var restaurantId = c.Query("restaurantId")
+	var restaurantId = c.Params("restaurantId")
 	foods, err := f.foodInputPort.GetAllFoodsByRestaurantId(restaurantId)
 	if err != nil {
 		// TODO: handle error

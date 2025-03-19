@@ -41,11 +41,24 @@ func (r *RestaurantInputAdapter) CreateRestaurant(c *fiber.Ctx) error {
 
 func (r *RestaurantInputAdapter) UpdateRestaurant(c *fiber.Ctx) error {
 	var restaurant domain.Restaurant
+	restaurantId := c.Params("restaurantId")
+	if restaurantId == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID is required",
+		})
+	}
 	if err := c.BodyParser(&restaurant); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Error parsing JSON",
 		})
 	}
+
+	if restaurant.ID != restaurantId {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Restaurant ID mismatch",
+		})
+	}
+
 	updatedRestaurant, err := r.restaurantInputPort.UpdateRestaurant(&restaurant)
 	if err != nil {
 		// TODO: handle error
@@ -92,7 +105,7 @@ func (r *RestaurantInputAdapter) GetMyRestaurant(c *fiber.Ctx) error {
 }
 
 func (r *RestaurantInputAdapter) GetRestaurantByID(c *fiber.Ctx) error {
-	restaurantId := c.Query("restaurantId")
+	restaurantId := c.Params("restaurantId")
 
 	// handle query parameters error
 	if restaurantId == "" {
