@@ -60,27 +60,12 @@ func main() {
 
 	app.Use(middleware.AuthenticateToken)
 
-	app.Get("/api/user/:userId", userInputAdapter.GetUserByUserId)
-	app.Put("/api/user/:userId", userInputAdapter.UpdateUser)
-	app.Get("/api/admin/users", userInputAdapter.GetAllUsers)
-	app.Get("/api/admin/owners", userInputAdapter.GetAllOwners)
-	app.Post("/api/admin/user", userInputAdapter.CreateUser)
-	app.Delete("/api/user/:userId", userInputAdapter.DeleteUser)
-
-	app.Get("/api/owner/restaurant", restaurantInputAdapter.GetMyRestaurant)
-	app.Post("/api/owner/restaurant", restaurantInputAdapter.CreateRestaurant)
-	app.Put("/api/owner/restaurant/:restaurantId/details", restaurantInputAdapter.UpdateRestaurant)
-	app.Put("/api/owner/restaurant/:restaurantId/status", restaurantInputAdapter.OwnerUpdateRestaurantStatus)
-	app.Delete("/api/owner/restaurant/:restaurantId", restaurantInputAdapter.DeleteRestaurant)
+	app.Get("/api/user/me", userInputAdapter.GetUserByUserId)
+	app.Put("/api/user/me", userInputAdapter.UpdateUser)
+	app.Delete("/api/user/me", userInputAdapter.DeleteUser)
 
 	app.Get("/api/restaurant/:restaurantId", restaurantInputAdapter.GetRestaurantByID)
 
-	app.Get("/api/admin/restaurants", restaurantInputAdapter.GetAllRestaurants)
-	app.Put("/api/admin/restaurant/:restaurantId/status", restaurantInputAdapter.AdminUpdateRestaurantStatus)
-
-	app.Post("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.CreateFood)
-	app.Put("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.UpdateFood)
-	app.Delete("/api/owner/restaurant/:restaurantId/food/:foodId", foodInputAdapter.DeleteFood)
 	app.Get("/api/restaurant/:restaurantId/food/:foodId", foodInputAdapter.GetFoodByRestaurantIdAndFoodId)
 	app.Get("/api/restaurant/:restaurantId/foods", foodInputAdapter.GetAllFoodsByRestaurantID)
 
@@ -89,8 +74,32 @@ func main() {
 	app.Put("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrder)
 	app.Delete("/api/user/restaurant/:restaurantId/order/:orderId", orderInputAdapter.DeleteOrder)
 	app.Get("/api/user/me/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
+
+	app.Use(middleware.RequireOwnerRole)
+
+	app.Get("/api/owner/restaurant", restaurantInputAdapter.GetMyRestaurant)
+	app.Post("/api/owner/restaurant", restaurantInputAdapter.CreateRestaurant)
+	app.Put("/api/owner/restaurant/:restaurantId/details", restaurantInputAdapter.UpdateRestaurant)
+	app.Put("/api/owner/restaurant/:restaurantId/status", restaurantInputAdapter.OwnerUpdateRestaurantStatus)
+	app.Delete("/api/owner/restaurant/:restaurantId", restaurantInputAdapter.DeleteRestaurant)
+
+	app.Post("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.CreateFood)
+	app.Put("/api/owner/restaurant/:restaurantId/food", foodInputAdapter.UpdateFood)
+	app.Delete("/api/owner/restaurant/:restaurantId/food/:foodId", foodInputAdapter.DeleteFood)
+
 	app.Patch("/api/owner/restaurant/:restaurantId/order/:orderId", orderInputAdapter.UpdateOrderStatus)
 	app.Get("/api/owner/restaurant/:restaurantId/orders", orderInputAdapter.GetOrderByRestaurantIdDateAndStatus)
 
+	app.Use(middleware.RequireAdminRole)
+
+	app.Get("/api/admin/users", userInputAdapter.GetAllUsers)
+	app.Get("/api/admin/owners", userInputAdapter.GetAllOwners)
+	app.Post("/api/admin/user", userInputAdapter.CreateUser)
+	app.Get("/api/admin/user/:userId", userInputAdapter.GetUserByUserId)
+	app.Put("/api/admin/user/:userId", userInputAdapter.UpdateUser)
+	app.Delete("/api/admin/user/:userId", userInputAdapter.DeleteUser)
+
+	app.Get("/api/admin/restaurants", restaurantInputAdapter.GetAllRestaurants)
+	app.Put("/api/admin/restaurant/:restaurantId/status", restaurantInputAdapter.AdminUpdateRestaurantStatus)
 	app.Listen(":" + config.AppConfig.APIPort)
 }

@@ -38,22 +38,22 @@ func (c *AuthenticationUseCase) Login(email string, password string) (*domain.Us
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return &domain.User{},"", err
+		return &domain.User{}, "", err
 	}
 
 	token, err := GenerateJWT(user)
 	if err != nil {
-		return &domain.User{},"", err
+		return &domain.User{}, "", err
 	}
-	return user,token, nil
+	return user, token, nil
 }
 
 func GenerateJWT(user *domain.User) (string, error) {
 	claims := jwt.MapClaims{
-		"email": user.Email,
-		"role":  user.Role,
-		"id":    user.ID,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(),
+		"user_id": user.ID,
+		"role":    user.Role,
+		"id":      user.ID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
